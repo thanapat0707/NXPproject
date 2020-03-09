@@ -1,0 +1,103 @@
+<!--<section>-->
+<!--	<div *ngIf="MenuActive">-->
+<!--		{{ MenuActive }}-->
+<!--	</div>-->
+<!--	<ng-sidebar-container style="height: 75vh;">-->
+<!--		<ng-sidebar [(opened)]="opened"-->
+<!--					position="left"-->
+<!--					mode="push"-->
+<!--					dock="true"-->
+<!--					dockedSize="51px">-->
+<!--			<div class="dropdown-list" [ngSwitch]="MenuActive">-->
+<!--				<div class="form-group">-->
+<!--					<label for="packer">Packer</label>-->
+<!--					<nz-select [(ngModel)]="packerChoose"-->
+<!--							   nzSize="default"-->
+<!--							   nzShowSearch-->
+<!--							   nzAllowClear-->
+<!--							   (ngModelChange)="getPackerGroup();"-->
+<!--							   id="packer">-->
+<!--						<nz-option *ngFor="let option of listOfPacker | unique : 'packer_type' | orderBy: 'packer_type'"-->
+<!--								   [nzLabel]="option.packer_type"-->
+<!--								   [nzValue]="option.packer_type">-->
+<!--						</nz-option>-->
+<!--					</nz-select>-->
+<!--				</div>-->
+<!--				<div class="form-group">-->
+<!--					<label for="packergroup">Packer Group</label>-->
+<!--					<nz-select [(ngModel)]="packergroupChoose"-->
+<!--							   nzSize="default"-->
+<!--							   nzShowSearch-->
+<!--							   nzAllowClear-->
+<!--							   (ngModelChange)="getPackerID()"-->
+<!--							   id="packergroup">-->
+<!--						<nz-option-->
+<!--							*ngFor="let option of packergroup | unique : 'packer_group' | orderBy: 'packer_group'"-->
+<!--							[nzLabel]="option.packer_group"-->
+<!--							[nzValue]="option.packer_group">-->
+<!--						</nz-option>-->
+<!--					</nz-select>-->
+<!--				</div>-->
+<!--				<div class="form-group">-->
+<!--					&lt;!&ndash; DropDown ของ PackerID &ndash;&gt;-->
+<!--					<label for="packerid">Packer ID</label>-->
+<!--					<nz-select [(ngModel)]="packeridChoose"-->
+<!--							   nzSize="default"-->
+<!--							   nzShowSearch-->
+<!--							   nzAllowClear-->
+<!--							   (ngModelChange)="getSOT()"-->
+<!--							   id="packerid">-->
+<!--						<nz-option *ngFor="let option of packerid | unique : 'packer_id' | orderBy: 'packer_id'"-->
+<!--								   [nzLabel]="option.packer_id"-->
+<!--								   [nzValue]="option.packer_id">-->
+<!--						</nz-option>-->
+<!--					</nz-select>-->
+<!--				</div>-->
+<!--				<div class="form-group" *ngSwitchCase="'FIND'">-->
+<!--					<label for="sot-before">Before SOT</label>-->
+<!--					<nz-select [(ngModel)]="sotBeforeChoose"-->
+<!--							   nzShowSearch-->
+<!--							   nzAllowClear-->
+<!--							   id="sot-before">-->
+<!--						<nz-option *ngFor="let option of sot | unique : 'sot_id' | orderBy: 'sot_id'"-->
+<!--								   nzLabel="{{option.sot_id}}, {{option.SOT.package_name}}"-->
+<!--								   [nzValue]="option.sot_id">-->
+<!--						</nz-option>-->
+<!--					</nz-select>-->
+<!--				</div>-->
+<!--				<div class="form-group" *ngSwitchCase="'FIND'">-->
+<!--					&lt;!&ndash; DropDown ของ SOT ปลายทาง&ndash;&gt;-->
+<!--					<label for="sot-after">After SOT</label>-->
+<!--					<nz-select [(ngModel)]="sotAfterChoose"-->
+<!--							   nzSize="default"-->
+<!--							   nzShowSearch-->
+<!--							   nzAllowClear-->
+<!--							   id="sot-after">-->
+<!--						<nz-option *ngFor="let option of sot | unique : 'sot_id' | orderBy: 'sot_id'"-->
+<!--								   nzLabel="{{option.sot_id}}, {{option.SOT.package_name}}"-->
+<!--								   [nzValue]="option.sot_id">-->
+<!--						</nz-option>-->
+<!--					</nz-select>-->
+<!--				</div>-->
+<!--				<br>-->
+<!--				<div class="form-group">-->
+<!--					<button class="btn btn-primary w-100" (click)="sentData()">FIND</button>-->
+<!--				</div>-->
+<!--			</div>-->
+<!--&lt;!&ndash;			<button class="btn btn-success" (click)="sentData()">TEST BUTTON</button>&ndash;&gt;-->
+<!--			<button *ngIf="opened" class="btn btn-light toggle" (click)="open()"><i class="fa fa-mail-reply"></i>-->
+<!--			</button>-->
+<!--			<button *ngIf="!opened" class="btn btn-light toggle" (click)="open()"><i class="fa fa-mail-forward"></i>-->
+<!--			</button>-->
+
+<!--		</ng-sidebar>-->
+<!--		<div ng-sidebar-content>-->
+<!--			<router-outlet></router-outlet>-->
+<!--&lt;!&ndash;			<app-find [Test] = parentTest></app-find>&ndash;&gt;-->
+<!--		</div>-->
+<!--	</ng-sidebar-container>-->
+<!--</section>-->
+
+<section>
+	<router-outlet></router-outlet>
+</section>

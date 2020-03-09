@@ -1,0 +1,40 @@
+<div class="container">
+	<div class="header">
+		<ul>
+			<li><a (click) = "CallModal('insert')">Insert</a></li>
+		</ul>
+	</div>
+	<div class="sot">
+		<nz-table nzPaginationPosition="top"
+				  nzBordered="true"
+				  [nzPageSize]="7"
+				  #sotTable [nzData]="listOfSOT">
+			<thead>
+			<tr>
+				<th class="text-center">SOT</th>
+				<th class="text-center">Package</th>
+				<th class="text-center">Width</th>
+				<th class="text-center">Length</th>
+				<th class="text-center">Thickness</th>
+				<th class="text-center">C-Width</th>
+				<th nzWidth="30px"></th>
+				<th nzWidth="50px"></th>
+			</tr>
+			</thead>
+			<tbody>
+			<tr *ngFor="let data of sotTable.data">
+				<td>{{ data.sot_id }}</td>
+				<td>{{ data.package_name }}</td>
+				<td class="text-center">{{ data.package_width }}</td>
+				<td class="text-center">{{ data.package_length }}</td>
+				<td class="text-center">{{ data.package_thickness }}</td>
+				<td class="text-center">{{ data.package_cwidth }}</td>
+				<td><button class="btn btn-info" (click)="CallModal('update', data)">Edit</button></td>
+				<td><button class="btn btn-danger" (click)="Delete(data.sot_id)">Delete</button></td>
+			</tr>
+			</tbody>
+		</nz-table>
+	</div>
+</div>
+
+

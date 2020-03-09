@@ -1,0 +1,123 @@
+<div class="modal-container" [ngSwitch]="SQL">
+	<div class="content">
+		<div class="modal-header">
+			<h4 class="modal-title" *ngSwitchCase="'insert'">Insert Part data</h4>
+			<h4 class="modal-title" *ngSwitchCase="'update'">Update Part data</h4>
+			<button class="btn btn-warning pm" *ngSwitchCase="'update'" (click)="OpenSubmitModal( ibPartdataID )">PM</button>
+
+			<button type="button" class="close" aria-label="Close" (click)="activeModal.close()">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+		<div class="modal-body">
+			<form #PartdataForm="ngForm">
+				<div class="form-group row">
+<!--					<label for="partnumber" class="col-sm-4 col-form-label required">Part data ID :</label>-->
+<!--					<div class="col-sm-7">-->
+<!--						<input [disabled]="SQL=='update'" [(ngModel)]="ibPartdataID" id="partnumber"-->
+<!--							   name="partnumber" type="text" class="form-control" (click)="closeAlert()" required>-->
+<!--						<div *ngIf="alert" class="alert alert-danger">-->
+<!--							Duplicate Part data ID-->
+<!--						</div>-->
+<!--					</div>-->
+					<label for="partdata" class="col-sm-4 col-form-label required">Part data Name :</label>
+					<div class="col-sm-7">
+						<input [(ngModel)]="ibPartdataName" id="partdata" name="partdata" type="text" class="form-control" (click)="closeAlert()" required>
+						<div *ngIf="alert" class="alert alert-danger">
+							Duplicate Part data Name
+						</div>
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="partname" class="col-sm-4 col-form-label required">Part type :</label>
+					<div class="col-sm-7">
+<!--						<select-->
+<!--							[(ngModel)]="ibPartname"-->
+<!--							class="form-control" id="partname" name="partname" required>-->
+<!--							<option *ngFor="let part of listOfPart" [value]="part.part_id">-->
+<!--								{{ part.part_name }}</option>-->
+<!--						</select>-->
+
+						<nz-select [(ngModel)]="ibPartname"
+								   id="partname" name="partname"
+								   nzSize="large"
+								   nzShowSearch>
+							<nz-option
+								*ngFor="let part of listOfPart"
+								[nzLabel]="part.part_name"
+								[nzValue]="part.part_id">
+							</nz-option>
+						</nz-select>
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="timebase" class="col-sm-4 col-form-label">TimeBase :</label>
+					<div class="col-sm-7">
+						<input id="timebase" name="timebase" [(ngModel)]="ibTimebase" type="number"
+							   class="form-control">
+					</div>
+				</div>
+				<div class="form-group row" *ngSwitchCase="'update'">
+					<label for="timeuse" class="col-sm-4 col-form-label">TimeUse :</label>
+					<div class="col-sm-7">
+						<input id="timeuse" name="timeuse" [(ngModel)]="ibTimeuse" disabled type="number"
+							   class="form-control">
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="counterbase" class="col-sm-4 col-form-label">CounterBase :</label>
+					<div class="col-sm-7">
+						<input id="counterbase" name="counterbase" [(ngModel)]="ibCounterbase" type="number"
+							   class="form-control">
+					</div>
+				</div>
+				<div class="form-group row" *ngSwitchCase="'update'">
+					<label for="counteruse" class="col-sm-4 col-form-label">CounterUse :</label>
+					<div class="col-sm-7">
+						<input id="counteruse" name="counteruse" [(ngModel)]="ibCounteruse" disabled type="number"
+							   class="form-control">
+					</div>
+				</div>
+				<div class="form-group row" *ngSwitchCase="'update'">
+					<label for="in-status" class="col-sm-4 col-form-label required">Status :</label>
+					<div class="col-sm-7">
+						<input id="in-status" name="up-status" [(ngModel)]="ibStatus" disabled type="text"
+							   class="form-control">
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="location" class="col-sm-4 col-form-label required">Location :</label>
+					<div class="col-sm-7">
+<!--						[disabled]="ibStatus=='packer'" -->
+<!--						<select-->
+<!--							[(ngModel)]="ibLocation"-->
+<!--							class="form-control" id="location" name="location" required>-->
+<!--							<option *ngFor="let location of listOfLocation" [value]="location.location_id">-->
+<!--								{{ location.location_id }}</option>-->
+<!--						</select>-->
+
+						<nz-select [(ngModel)]="ibLocation"
+								   id="location" name="location"
+								   nzSize="large"
+								   nzShowSearch>
+							<nz-option
+								*ngFor="let location of listOfLocation"
+								nzLabel="{{location.location_id}} [ {{location.location_description}} ]"
+								[nzValue]="location.location_id">
+							</nz-option>
+						</nz-select>
+					</div>
+				</div>
+			</form>
+		</div>
+		<div class="modal-footer">
+			<button *ngSwitchCase="'insert'" [disabled]="!PartdataForm.form.valid" (click)="insert()" type="submit"
+					class="btn btn-primary w-25">Insert
+			</button>
+			<button *ngSwitchCase="'update'" [disabled]="!PartdataForm.form.valid" (click)="update()" type="submit"
+					class="btn btn-primary w-25">Update
+			</button>
+			<button (click)="activeModal.close()" type="submit" class="btn btn-secondary w-25">Cancel</button>
+		</div>
+	</div>
+</div>

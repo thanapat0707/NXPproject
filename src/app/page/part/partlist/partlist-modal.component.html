@@ -1,0 +1,195 @@
+<div class="container" [ngSwitch]="SQL">
+	<div class="content" *ngSwitchCase="'update'">
+		<div class="modal-header">
+			<h4 class="modal-title">Update PartList</h4>
+			<button type="button" class="close" aria-label="Close" (click)="activeModal.close()">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+		<div class="modal-body">
+			<div class="partlist">
+				<form #PartlistForm="ngForm">
+					<div class="form-group row">
+						<label for="packer_id" class="col-sm-2 col-form-label">Packer ID :</label>
+						<div class="col-sm-9">
+							<input id="packer_id" name="packer_id" disabled [value]="PartList.packer_id" type="text"
+								   class="form-control">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="sot_id" class="col-sm-2 col-form-label">SOT :</label>
+						<div class="col-sm-9">
+							<input id="sot_id" name="sot_id" disabled [value]="PartList.sot_id" type="text"
+								   class="form-control">
+						</div>
+					</div>
+					<div class="showPart row" *ngIf="PartList.PartlistDetail.length">
+						<label for="sot_id" class="col-sm-2 col-form-label">Part list :</label>
+						<div class="form-group col-sm-9">
+							<div class="form-group row " *ngFor="let part of PartList.PartlistDetail">
+								<div class="col-sm-10 row">
+									<div class="col-sm-2">
+										<nz-avatar nzShape="square" nzSize="large" [nzSrc]="part.Part.part_image"></nz-avatar>
+									</div>
+									<div class="col-sm-10">
+										<input disabled [value]="part.Part.part_name" [id]="part.Part.part_name"
+											   [name]="part.Part.part_name" type="text" class="form-control">
+									</div>
+								</div>
+								<div class="col-sm-2">
+									<button class="btn btn-danger"
+											(click)="DeletePartlistDetail( PartList.partlist_id, part.Part.part_id)">
+										X
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="newPart form-group row" *ngIf="PartList.PartlistDetail.length < 20">
+						<label for="partname" class="col-sm-2 col-form-label required">Add Part :</label>
+						<div class="col-sm-8">
+<!--							<select-->
+<!--								[(ngModel)]="newPart"-->
+<!--								class="form-control" id="partname" name="partname" required>-->
+<!--								<option>Select Part type</option>-->
+<!--								<option *ngFor="let data of listOfPart" [value]="data.part_id">-->
+<!--									{{ data.part_name }}</option>-->
+<!--							</select>-->
+
+							<nz-select [(ngModel)]="newPart"
+									   id="partname" name="partname"
+									   nzSize="large"
+									   nzShowSearch required>
+								<nz-option
+									*ngFor="let data of listOfPart | orderBy: 'part_name'"
+									[nzLabel]="data.part_name"
+									[nzValue]="data.part_id">
+								</nz-option>
+							</nz-select>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button [disabled]="!PartlistForm.form.valid" (click)="InsertPartlistDetail()" type="submit"
+					class="btn btn-primary w-25">Add
+			</button>
+			<button (click)="activeModal.close()" type="submit" class="btn btn-secondary w-25">Cancel</button>
+		</div>
+	</div>
+<!-- --------------------------------------------------------------------------------------------- -->
+	<div class="content" *ngSwitchCase="'insert'">
+		<div class="modal-header">
+			<h4 class="modal-title">Insert PartList</h4>
+			<button type="button" class="close" aria-label="Close" (click)="activeModal.close()">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+		<div class="modal-body">
+			<form #PartlistForm="ngForm">
+				<div class="form-group row">
+					<label for="packer" class="col-sm-4 col-form-label required">Packer type :</label>
+					<div class="col-sm-7">
+<!--						<select [(ngModel)]="packerChoose"-->
+<!--								(ngModelChange)="getPackerGroup()"-->
+<!--								class="form-control" id="packer" name="packer" required>-->
+<!--							<option>Select Packer</option>-->
+<!--							<option *ngFor="let data of listOfPacker | unique : 'packer_type' | orderBy: 'packer_type'">-->
+<!--								{{ data.packer_type }}</option>-->
+<!--						</select>-->
+						<nz-select [(ngModel)]="packerChoose"
+								   (ngModelChange)="getPackerGroup()"
+								   id="packer" name="packer"
+								   nzSize="large"
+								   nzShowSearch required>
+							<nz-option
+								*ngFor="let data of listOfPacker | unique : 'packer_type' | orderBy: 'packer_type'"
+								[nzLabel]="data.packer_type"
+								[nzValue]="data.packer_type">
+							</nz-option>
+						</nz-select>
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="packergroup" class="col-sm-4 col-form-label required">Packer group :</label>
+					<div class="col-sm-7">
+<!--						<select [(ngModel)]="packerGroupChoose"-->
+<!--								(ngModelChange)="getPackerID()"-->
+<!--								class="form-control" id="packergroup" name="packergroup" required>-->
+<!--							<option>Select PackerGroup</option>-->
+<!--							<option-->
+<!--								*ngFor="let data of packerGroup | unique : 'packer_group' | orderBy: 'packer_group'">-->
+<!--								{{ data.packer_group }}</option>-->
+<!--						</select>-->
+
+						<nz-select [(ngModel)]="packerGroupChoose"
+								   (ngModelChange)="getPackerID()"
+								   id="packergroup" name="packergroup"
+								   nzSize="large"
+								   nzShowSearch required>
+							<nz-option
+								*ngFor="let data of packerGroup | unique : 'packer_group' | orderBy: 'packer_group'"
+								[nzLabel]="data.packer_group"
+								[nzValue]="data.packer_group">
+							</nz-option>
+						</nz-select>
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="packerid" class="col-sm-4 col-form-label required">Packer ID :</label>
+					<div class="col-sm-7">
+<!--						<select [(ngModel)]="packerIDChoose"-->
+<!--								(ngModelChange)="getPartlistSOT()"-->
+<!--								class="form-control" id="packerid" name="packerid" required>-->
+<!--							<option>Select PackerID</option>-->
+<!--							<option *ngFor="let data of packerID | unique : 'packer_id' | orderBy: 'packer_id'">-->
+<!--								{{ data.packer_id }}</option>-->
+<!--						</select>-->
+
+						<nz-select [(ngModel)]="packerIDChoose"
+								   (ngModelChange)="getPartlistSOT()"
+								   id="packerid" name="packerid"
+								   nzSize="large"
+								   nzShowSearch required>
+							<nz-option
+								*ngFor="let data of packerID | unique : 'packer_id' | orderBy: 'packer_id'"
+								[nzLabel]="data.packer_id"
+								[nzValue]="data.packer_id">
+							</nz-option>
+						</nz-select>
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="sot" class="col-sm-4 col-form-label required">SOT :</label>
+					<div class="col-sm-7">
+<!--						<select [(ngModel)]="sotChoose"-->
+<!--								class="form-control" id="sot" name="sot" required>-->
+<!--							<option value="">Select SOT</option>-->
+<!--							<option *ngFor="let data of listOfSOTChoose | unique : 'sot_id' | orderBy: 'sot_id'"-->
+<!--									[value]="data.sot_id">-->
+<!--								{{ data.sot_id }} , {{ data.package_name }}</option>-->
+<!--						</select>-->
+
+						<nz-select [(ngModel)]="sotChoose"
+								   id="sot" name="sot"
+								   nzSize="large"
+								   nzShowSearch required>
+							<nz-option
+								*ngFor="let data of listOfSOTChoose | unique : 'sot_id' | orderBy: 'sot_id'"
+								nzLabel="{{data.sot_id}}, {{data.package_name}}"
+								[nzValue]="data.sot_id">
+							</nz-option>
+						</nz-select>
+					</div>
+				</div>
+			</form>
+		</div>
+		<div class="modal-footer">
+			<button [disabled]="!PartlistForm.form.valid" (click)="InsertPartlist()" type="submit"
+					class="btn btn-primary w-25">Insert
+			</button>
+			<button (click)="activeModal.close()" type="submit" class="btn btn-secondary w-25">Cancel</button>
+		</div>
+	</div>
+</div>

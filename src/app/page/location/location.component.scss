@@ -1,0 +1,90 @@
+.container {
+    padding: 0px;
+    // margin: 5px;
+    border-radius: 5px;
+    min-width: 100%;
+    background: ghostwhite;
+
+    .location {
+        padding: 15px;
+        min-width: 100%;
+
+        button {
+            margin-top: 15px;
+        }
+    }
+}
+
+.header {
+    //min-width: 100%;
+    height: 50px;
+    // background-color: red;
+
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: #e4f3ac;
+        //background-color: #ebff9d;
+    }
+
+    li {
+        float: left;
+    }
+
+    li a {
+        display: block;
+        color: black;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+    }
+
+    li a:hover {
+        background-color: #e9ff7e;
+    }
+}
+
+.alert {
+    line-height: 10px;
+}
+
+.required:before {
+    color: red;
+    content: ' * ';
+}
+
+.modal-body {
+    label {
+        text-align: right;
+    }
+}
+
+nz-avatar {
+    padding-right: 10px;
+}
+
+.part-in-location {
+    display: block;
+    padding: 3px;
+}
+
+// --------------------------------------------------------------------------------------------------
+.search-box {
+    padding: 8px;
+}
+
+.search-box input {
+    width: 188px;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.search-box button {
+    width: 90px;
+}
+
+.search-button {
+    margin-right: 8px;
+}

@@ -1,0 +1,24 @@
+<div class="modal-body">
+	<h1>Complete</h1>
+	<br>
+	<h4>Please check order in Main menu</h4>
+<!--	<div class="location" *ngFor="let part of Part">-->
+<!--		<h3>{{part.partdata_id}} ==> {{part.location}}</h3>-->
+	<div class="location">
+		<nz-table [nzShowPagination]="false" #part [nzData]="Part">
+			<thead>
+				<tr>
+					<th class="text-center">PartData Name</th>
+					<th class="text-center">Location</th>
+				</tr>
+			</thead>
+			<tbody *ngFor = "let data of part.data">
+				<tr>
+					<td>{{ data.partdata_name }}</td>
+					<td>{{ data.location_id }}</td>
+				</tr>
+			</tbody>
+		</nz-table>
+	</div>
+	<button class="btn btn-primary" routerLink="/main" routerLinkActive="active" (click)="activeModal.close()">Go to Main</button>
+</div>

@@ -1,0 +1,61 @@
+<div class="container" [ngSwitch]="SQL">
+	<div class="modal-header">
+		<h4 *ngSwitchCase="'insert'" class="modal-title">Insert SOT</h4>
+		<h4 *ngSwitchCase="'update'" class="modal-title">Update SOT</h4>
+		<button type="button" class="close" aria-label="Close" (click)="activeModal.close()">
+			<span aria-hidden="true">&times;</span>
+		</button>
+	</div>
+	<div class="modal-body">
+		<form #SOTForm="ngForm">
+			<div class="form-group row">
+				<label for="sot" class="col-sm-5 col-form-label required">SOT :</label>
+				<div class="col-sm-6">
+					<input [disabled]="SQL=='update'" id="sot" name="sot" [(ngModel)]="ibSOT" type="text"
+						   class="form-control" maxlength="20" (click)="closeAlert()" required>
+					<div *ngIf="alert" class="alert alert-danger">
+						Duplicate SOT
+					</div>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="name" class="col-sm-5 col-form-label">Package Name :</label>
+				<div class="col-sm-6">
+					<input id="name" name="name" [(ngModel)]="ibPackageName" type="text" class="form-control">
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="name" class="col-sm-5 col-form-label">Package Width :</label>
+				<div class="col-sm-6">
+					<input id="width" name="width" [(ngModel)]="ibPackageWidth" type="text" class="form-control">
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="length" class="col-sm-5 col-form-label">Package Length :</label>
+				<div class="col-sm-6">
+					<input id="length" name="length" [(ngModel)]="ibPackageLength" type="text" class="form-control">
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="thickness" class="col-sm-5 col-form-label">Package Thickness :</label>
+				<div class="col-sm-6">
+					<input id="thickness" name="thickness" [(ngModel)]="ibPackageThickness" type="text"
+						   class="form-control">
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="cwidth" class="col-sm-5 col-form-label">Package C-Width :</label>
+				<div class="col-sm-6">
+					<input id="cwidth" name="cwidth" [(ngModel)]="ibPackageCWidth" type="text" class="form-control">
+				</div>
+			</div>
+		</form>
+	</div>
+	<div class="modal-footer">
+		<button *ngSwitchCase="'insert'" [disabled]="!SOTForm.form.valid" (click)="Insert()" type="submit"
+				class="btn btn-primary w-25">Insert
+		</button>
+		<button *ngSwitchCase="'update'" (click)="Update()" type="submit" class="btn btn-primary w-25">Update</button>
+		<button (click)="activeModal.close()" type="submit" class="btn btn-secondary w-25">Cancel</button>
+	</div>
+</div>

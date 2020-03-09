@@ -1,0 +1,41 @@
+/* You can add global styles to this file, and also import other style files */
+@import '~bootstrap/dist/css/bootstrap.min.css';
+@import "~ng-zorro-antd/style/index.min.css"; /* Import basic styles */
+@import "~ng-zorro-antd/button/style/index.min.css"; /* Import styles of the component */
+
+$fa-font-path: "~font-awesome/fonts";
+@import '~font-awesome/scss/font-awesome';
+
+body {
+    //font-family: "Comic Sans MS";
+    font-size: 15px;
+    font-family: "Calibri";
+    //background: #fffbe6;
+    background: #dae9f1;
+}
+
+.modal-backdrop {
+    z-index: 999 !important;
+}
+
+.modal {
+    z-index: 999 !important;
+}
+
+//.modal.fade.show {
+//    z-index: 999 !important;
+//}
+
+.modal-header {
+    border-bottom: 0 none;
+}
+
+.modal-footer {
+    border-top: 0 none;
+    display:block;
+    text-align: center;
+}
+
+
+
+

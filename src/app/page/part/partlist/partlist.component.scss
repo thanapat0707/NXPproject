@@ -1,0 +1,117 @@
+// Main --------------------------------------------------------------------------------------------
+.container {
+    padding: 0px;
+    min-width: 100%;
+    background-color: ghostwhite;
+    border-radius: 5px;
+
+    .partlist {
+        padding: 15px;
+        min-width: 100%;
+        h6 {
+            font-size: 14px;
+            cursor: pointer;
+        }
+        nz-table {
+            tbody {
+                tr {
+                    span {
+                        display: inline-block;
+                        width: 85px;
+                        height: 35px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.header {
+    //min-width: 100%;
+    height: 50px;
+    // background-color: red;
+
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: #e4f3ac;
+    }
+
+    li {
+        float: left;
+    }
+
+    li a {
+        display: block;
+        color: black;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+    }
+
+    li a:hover {
+        background-color: #e9ff7e;
+    }
+}
+
+ng-template {
+    margin: auto;
+}
+
+// Modal --------------------------------------------------------------------------------------------
+.form-group {
+    //margin: 0;
+    //padding: 0;
+}
+
+.showPart {
+    //input {
+    //    display: inline-block;
+    //    margin-bottom: 10px;
+    //    margin-right: 20px;
+    //}
+}
+
+.newPart {
+    select {
+        display: inline-block;
+        margin-bottom: 10px;
+        margin-right: 20px;
+    }
+}
+
+.alert {
+    line-height: 10px;
+}
+
+.required:before {
+    color: red;
+    content: ' * ';
+}
+
+.modal-body {
+    label {
+        text-align: right;
+    }
+}
+
+// ----------------------------------------------------------------------------------------------------------
+.search-box {
+    padding: 8px;
+}
+
+.search-box input {
+    width: 188px;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.search-box button {
+    width: 90px;
+}
+
+.search-button {
+    margin-right: 8px;
+}

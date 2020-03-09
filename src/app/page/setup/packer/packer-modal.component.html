@@ -1,0 +1,50 @@
+<div class="container" [ngSwitch]="SQL">
+	<div class="modal-header">
+		<h4 *ngSwitchCase="'insert'" class="modal-title">Insert Packer</h4>
+		<h4 *ngSwitchCase="'update'" class="modal-title">Update Packer</h4>
+		<button type="button" class="close" aria-label="Close" (click)="activeModal.close()">
+			<span aria-hidden="true">&times;</span>
+		</button>
+	</div>
+	<div class="modal-body">
+		<form #PackerForm="ngForm">
+			<div class="form-group row">
+				<label for="type" class="col-sm-4 col-form-label required">Packer Type :</label>
+				<div class="col-sm-7">
+					<input [(ngModel)]="ibPackerType" id="type" name="type" type="text" class="form-control" required>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="group" class="col-sm-4 col-form-label required">Packer Group :</label>
+				<div class="col-sm-7">
+					<input [(ngModel)]="ibPackerGroup" id="group" name="group" type="text" class="form-control"
+						   required>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="id" class="col-sm-4 col-form-label required">Packer ID :</label>
+				<div class="col-sm-7">
+					<input [(ngModel)]="ibPackerID" [disabled]="SQL=='update'" id="id" name="id" type="text"
+						   class="form-control" (click)="closeAlert()" required>
+					<div *ngIf="alert" class="alert alert-danger">
+						Duplicate PackerID
+					</div>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="uph" class="col-sm-4 col-form-label">Packer UPH :</label>
+				<div class="col-sm-7">
+					<input [(ngModel)]="ibPackerUPH" id="uph" name="uph" type="text" class="form-control">
+				</div>
+			</div>
+		</form>
+	</div>
+	<div class="modal-footer">
+		<button *ngSwitchCase="'insert'" [disabled]="!PackerForm.form.valid" (click)="Insert()" type="submit"
+				class="btn btn-primary w-25">Insert
+		</button>
+		<button *ngSwitchCase="'update'" (click)="Update()" type="submit" class="btn btn-primary w-25">Update
+		</button>
+		<button (click)="activeModal.close()" type="submit" class="btn btn-secondary w-25">Cancel</button>
+	</div>
+</div>

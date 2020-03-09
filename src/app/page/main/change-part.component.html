@@ -1,0 +1,35 @@
+<div class="modal-header">
+	<h4 class="modal-title">Change Part</h4>
+	<button type="button" class="close" aria-label="Close" (click)="activeModal.close()">
+		<span aria-hidden="true">&times;</span>
+	</button>
+</div>
+<div class="modal-body">
+	<nz-table [nzShowPagination]="false" #Partdata [nzData]="listOfPartdata">
+		<thead>
+		<tr>
+			<th class = "text-center">PartData Name</th>
+			<th class = "text-center">Location</th>
+			<th class = "text-center">TimeBase</th>
+<!--			<th class = "text-center">Time_Use</th>-->
+			<th class = "text-center">CounterBase</th>
+<!--			<th class = "text-center">Counter_Use</th>-->
+			<th></th>
+		</tr>
+		</thead>
+		<tbody *ngFor="let part of Partdata.data">
+		<tr>
+			<td class = "text-center"><nz-avatar nzShape="square" nzSize="large" [nzSrc]="part.Part.part_image"></nz-avatar>{{ part.partdata_name }}</td>
+			<td class = "text-center">{{ part.location_id }}</td>
+			<td class = "text-center">{{ part.LifeTime.time_base }}</td>
+<!--			<td class = "text-center">{{ part.Partdata.LifeTime.time_use }}</td>-->
+			<td class = "text-center">{{ part.LifeTime.counter_base }}</td>
+<!--			<td class = "text-center">{{ part.Partdata.LifeTime.counter_use }}</td>-->
+			<td><button [disabled] = "disabled(part.partdata_id, part.status)" class="btn btn-primary" (click)="Confirm( part.partdata_id )">Change</button></td>
+		</tr>
+		</tbody>
+	</nz-table>
+</div>
+<div class="modal-footer">
+	<button (click)="activeModal.close()" type="submit" class="btn btn-secondary w-25">Cancel</button>
+</div>

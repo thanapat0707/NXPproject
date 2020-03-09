@@ -1,0 +1,25 @@
+<div class="modal-body">
+	<span class="img-change"></span>
+	<br>
+	<h1>Change complete</h1>
+	<h4>Please put the old part in to the new part's location.</h4>
+	<div class="location">
+		<nz-table [nzShowPagination]="false" #part [nzData]="Store">
+			<thead>
+			<tr>
+				<th class="text-center">PartData Name</th>
+				<th class="text-center">Location</th>
+			</tr>
+			</thead>
+			<tbody *ngFor = "let data of part.data">
+			<tr>
+				<td>{{ data.partdata_name }}</td>
+				<td>{{ data.location_id }}</td>
+			</tr>
+			</tbody>
+		</nz-table>
+	</div>
+
+	<button class="btn btn-primary" (click)="activeModal.close()">Go to Main</button>
+
+</div>

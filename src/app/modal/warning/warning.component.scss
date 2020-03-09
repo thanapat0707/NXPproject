@@ -1,0 +1,16 @@
+.modal-body {
+    h1, h4 {
+        display: block;
+        text-align: center;
+    }
+}
+
+.img-warning {
+    background: url('../../../assets/images/warning.png') no-repeat;
+    width: 200px;
+    height: 200px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    background-size: contain;
+}

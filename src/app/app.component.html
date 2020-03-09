@@ -1,0 +1,98 @@
+<!--<ng-sidebar-container>-->
+<!--	&lt;!&ndash; sidebar &ndash;&gt;-->
+<!--	<ng-sidebar [(opened)]="opened"-->
+<!--				position="left"-->
+<!--				mode="push"-->
+<!--				dock="true"-->
+<!--				dockedSize="75px">-->
+<!--		<ul>-->
+<!--      <span class="logo" (click)="open()">-->
+<!--        Conversion Kit<br>Management-->
+<!--      </span>-->
+<!--			<li routerLink="/main" routerLinkActive="active">-->
+<!--				Conversion-->
+<!--			</li>-->
+<!--			<li routerLink="/find" routerLinkActive="active">-->
+<!--				Find-->
+<!--			</li>-->
+<!--			<li routerLink="/store" routerLinkActive="active">-->
+<!--				Store-->
+<!--			</li>-->
+<!--			<li routerLink="/location" routerLinkActive="active">-->
+<!--				Location-->
+<!--			</li>-->
+<!--			<li routerLink="/part" routerLinkActive="active">-->
+<!--				Part-->
+<!--			</li>-->
+<!--			<li routerLink="/setup" routerLinkActive="active">-->
+<!--				Setup-->
+<!--			</li>-->
+<!--			<button class="test btn btn-outline-primary" (click)="stopCounter()">Stop Counter</button>-->
+<!--			&lt;!&ndash;      <br>&ndash;&gt;-->
+<!--			&lt;!&ndash;      <button class="test btn btn-outline-primary" (click)="startCounter()">Start Counter</button>&ndash;&gt;-->
+<!--		</ul>-->
+
+<!--	</ng-sidebar>-->
+
+<!-- Page content-->
+<!--	<div ng-sidebar-content>-->
+<!--		<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top"> &lt;!&ndash; ใช้ fixed-top แล้วมีปัญหา แต่ใช้ sticky-top ได้ &ndash;&gt;-->
+<!--			<span class="navbar-toggler-icon float-left navbar-brand" style="top: 0px; cursor: pointer" (click)="open()"></span>-->
+<!--			<div class="collapse navbar-collapse" id="navbarSupportedContent">-->
+<!--				<ul class="navbar-nav mr-auto">-->
+<!--&lt;!&ndash;					<li class="nav-item active">&ndash;&gt;-->
+<!--&lt;!&ndash;						<a class="nav-link">Home</a>&ndash;&gt;-->
+<!--&lt;!&ndash;					</li>&ndash;&gt;-->
+<!--				</ul>-->
+<!--			</div>-->
+<!--		</nav>-->
+<!--		<div class="content">-->
+<!--			<router-outlet></router-outlet>-->
+<!--		</div>-->
+<div class="container sticky-top">
+	<div class="header">
+		<div class="logo">
+			<span class="img-nxp"></span>
+		</div>
+		<ul class="main-menu">
+			<li class="menu-option" routerLink="/main" routerLinkActive="active">
+				<i class="fa fa-wrench"></i>Conversion
+			</li>
+			<li class="menu-option" routerLink="/find-and-store" routerLinkActive="active">
+				<i class="fa fa-exchange"></i>Find and Store
+			</li>
+<!--			<li class="menu-option" routerLink="/store" routerLinkActive="active">-->
+<!--				<i class="fa fa-archive"></i>Store-->
+<!--			</li>-->
+			<li class="menu-option" routerLink="/location" routerLinkActive="active">
+				<i class="fa fa-building-o"></i>Location
+			</li>
+			<li class="menu-option" routerLink="/part" routerLinkActive="active">
+				<i class="fa fa-cogs"></i>Part
+			</li>
+			<li class="menu-option" routerLink="/setup" routerLinkActive="active">
+				<i class="fa fa-cog"></i>Setup
+			</li>
+		</ul>
+	</div>
+
+	<div class="sub-header" *ngIf="menuButtons">
+		<ul class="sub-menu">
+			<ng-container *ngFor="let data of menuButtons">
+				<li class="sub-menu-option" [routerLink]="data.routerLink" routerLinkActive="active">
+					{{data.name}}
+				</li>
+			</ng-container>
+		</ul>
+	</div>
+</div>
+<div class="content">
+	<router-outlet></router-outlet>
+</div>
+<!--	</div>-->
+<!--</ng-sidebar-container>-->
+
+
+
+
+

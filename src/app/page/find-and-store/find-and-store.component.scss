@@ -1,0 +1,33 @@
+::ng-deep aside {
+    border-radius: 5px;
+    width: 250px;
+    background: dimgray;
+    color: whitesmoke;
+
+}
+
+::ng-deep ng-sidebar-container {
+    z-index: 0;
+}
+
+.dropdown-list {
+    padding: 5px;
+}
+
+.content {
+    margin: 5px;
+}
+
+.toggle {
+    margin: 5px;
+    //display: block;
+    //float: right;
+    outline: none;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+
+nz-select {
+    min-width: 100%;
+}

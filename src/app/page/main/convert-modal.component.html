@@ -1,0 +1,41 @@
+<div class="modal-header">
+	<h4 class="modal-title">Part</h4>
+	<button type="button" class="close" aria-label="Close" (click)="activeModal.close()">
+		<span aria-hidden="true">&times;</span>
+	</button>
+</div>
+<div class="modal-body">
+	<nz-table [nzShowPagination]="false" #PartConvert [nzData]="listOfPartConvert">
+		<thead>
+		<tr>
+			<th class = "text-center">PartData Name</th>
+			<th class = "text-center">PartName</th>
+			<th class = "text-center">Location</th>
+			<th class = "text-center">TimeBase</th>
+			<th class = "text-center">Time_Use</th>
+			<th class = "text-center">CounterBase</th>
+			<th class = "text-center">Counter_Use</th>
+			<th></th>
+<!--			<th></th>-->
+		</tr>
+		</thead>
+		<tbody *ngFor="let part of PartConvert.data">
+		<!--			<tr [ngStyle]="{'background': LifeTimeCheck(data.counter_base, data.counter_use)}">-->
+		<tr [ngClass]="CheckLifeTime(part.Partdata.LifeTime.status)">
+			<td class = "text-center">{{ part.Partdata.partdata_name }}</td>
+<!--			<td>{{ part.Partdata.Part.part_name }}</td>-->
+			<td class = "text-center"><nz-avatar nzShape="square" nzSize="large" [nzSrc]="part.Partdata.Part.part_image"></nz-avatar>{{ part.Partdata.Part.part_name }}</td>
+			<td class = "text-center">{{ part.Partdata.location_id }}</td>
+			<td class = "text-center">{{ part.Partdata.LifeTime.time_base }}</td>
+			<td class = "text-center">{{ part.Partdata.LifeTime.time_use }}</td>
+			<td class = "text-center">{{ part.Partdata.LifeTime.counter_base }}</td>
+			<td class = "text-center">{{ part.Partdata.LifeTime.counter_use }}</td>
+<!--			<td><button class="btn btn-warning" (click)="OpenSubmitModal( part.Partdata.partdata_id )">PM</button></td>-->
+			<td><button class="btn btn-primary" (click)="ChangePart( part.Partdata )">Change</button></td>
+<!--			<td>-->
+<!--				<button class="btn btn-warning" (click)="OpenSubmitModal( part.Partdata.partdata_id )">PM</button>-->
+<!--			</td>-->
+		</tr>
+		</tbody>
+	</nz-table>
+</div>

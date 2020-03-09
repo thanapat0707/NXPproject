@@ -1,0 +1,131 @@
+<div class="container" [ngSwitch]="SQL">
+	<div class="content" *ngSwitchCase="'insert'">
+		<div class="modal-header">
+			<h4 class="modal-title">Insert Location</h4>
+		</div>
+		<div class="modal-body">
+			<form #LocationForm="ngForm">
+				<div class="form-group row">
+					<label for="rack" class="col-sm-5 col-form-label required">Rack ID :</label>
+					<div class="col-sm-6">
+						<input id="rack" name="rack" [(ngModel)]="ibRackID" type="number" class="form-control" required>
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="location" class="col-sm-5 col-form-label required">Location ID :</label>
+					<div class="col-sm-6">
+						<input id="location" name="location" [(ngModel)]="ibLocationID" type="text" class="form-control" required>
+					</div>
+				</div>
+			</form>
+		</div>
+		<div class="modal-footer">
+			<button [disabled]="!LocationForm.form.valid" (click)="InsertLocation()" type="submit"
+					class="btn btn-primary w-25">Insert
+			</button>
+			<button (click)="activeModal.close()" type="submit" class="btn btn-secondary w-25">Cancel</button>
+		</div>
+	</div>
+
+	<div class="content" *ngSwitchCase="'rack'">
+		<div class="modal-header">
+			<h4 class="modal-title">Create Rack</h4>
+		</div>
+		<div class="modal-body">
+			<form #RackForm="ngForm">
+				<div class="form-group row">
+					<label for="c-rack" class="col-sm-4 col-form-label required">Rack ID :</label>
+					<div class="col-sm-7">
+						<input id="c-rack" name="c-rack" [(ngModel)]="ibRackID" type="text" class="form-control" (click)="closeAlert()" required>
+						<div *ngIf="alert" class="alert alert-danger">
+							Duplicate Rack ID
+						</div>
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="row" class="col-sm-4 col-form-label required">row :</label>
+					<div class="col-sm-7">
+						<input id="row" name="row" [(ngModel)]="ibRow" type="number" class="form-control" required>
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="col" class="col-sm-4 col-form-label required">column :</label>
+					<div class="col-sm-7">
+						<input id="col" name="col" [(ngModel)]="ibColumn" type="number" class="form-control" required>
+					</div>
+				</div>
+			</form>
+		</div>
+		<div class="modal-footer">
+			<button [disabled]="!RackForm.form.valid" (click)="InsertRack()" type="submit"
+					class="btn btn-primary w-25">Create
+			</button>
+			<button (click)="activeModal.close()" type="submit" class="btn btn-secondary w-25">Cancel</button>
+		</div>
+	</div>
+
+<!--	<div class="content" *ngSwitchCase="'update'">-->
+<!--		<div class="modal-header">-->
+<!--			<h4 class="modal-title">Update location</h4>-->
+<!--		</div>-->
+<!--		<div class="modal-body">-->
+<!--			<form #LocationMapping="ngForm">-->
+<!--				<div class="form-group row">-->
+<!--					<label for="c-rack" class="col-sm-4 col-form-label required">Rack ID :</label>-->
+<!--					<div class="col-sm-7">-->
+<!--						<input id="c-rack" name="c-rack" [(ngModel)]="ibRackID" type="text" class="form-control" (click)="closeAlert()" required>-->
+<!--						<div *ngIf="alert" class="alert alert-danger">-->
+<!--							Duplicate Rack ID-->
+<!--						</div>-->
+<!--					</div>-->
+<!--				</div>-->
+<!--				<div class="form-group row">-->
+<!--					<label for="row" class="col-sm-4 col-form-label required">row :</label>-->
+<!--					<div class="col-sm-7">-->
+<!--						<input id="row" name="row" [(ngModel)]="ibRow" type="number" class="form-control" required>-->
+<!--					</div>-->
+<!--				</div>-->
+<!--				<div class="form-group row">-->
+<!--					<label for="col" class="col-sm-4 col-form-label required">column :</label>-->
+<!--					<div class="col-sm-7">-->
+<!--						<input id="col" name="col" [(ngModel)]="ibColumn" type="number" class="form-control" required>-->
+<!--					</div>-->
+<!--				</div>-->
+<!--			</form>-->
+<!--		</div>-->
+<!--		<div class="modal-footer">-->
+<!--			<button [disabled]="!LocationMapping.form.valid" (click)="InsertLocationMapping()" type="submit"-->
+<!--					class="btn btn-primary w-25">Add-->
+<!--			</button>-->
+<!--			<button (click)="activeModal.close()" type="submit" class="btn btn-secondary w-25">Cancel</button>-->
+<!--		</div>-->
+<!--	</div>-->
+
+	<div class="content" *ngSwitchCase="'update'">
+		<div class="modal-header">
+			<h4 class="modal-title">Update location</h4>
+		</div>
+		<div class="modal-body">
+			<form #Location="ngForm">
+				<div class="form-group row">
+					<label for="id" class="col-sm-4 col-form-label">Location ID</label>
+					<div class="col-sm-7">
+						<input id="id" name="id" [(ngModel)]="ibLocationID" type="text" class="form-control" disabled>
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="description" class="col-sm-4 col-form-label required">Description</label>
+					<div class="col-sm-7">
+						<input id="description" name="description" [(ngModel)]="ibDescription" type="text" class="form-control" required>
+					</div>
+				</div>
+			</form>
+		</div>
+		<div class="modal-footer">
+			<button [disabled]="!Location.form.valid" (click)="Update()" type="submit"
+					class="btn btn-primary w-25">Update
+			</button>
+			<button (click)="activeModal.close()" type="submit" class="btn btn-secondary w-25">Cancel</button>
+		</div>
+	</div>
+</div>

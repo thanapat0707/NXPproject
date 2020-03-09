@@ -1,0 +1,68 @@
+* {
+    // background: beige;
+    color: black;
+}
+
+section {
+    background-color: ghostwhite;
+    border-radius: 5px;
+    .convert-detail {
+        padding: 15px;
+    }
+    .part-data {
+        // background: ghostwhite;
+        margin: 15px;
+        //border-radius: 5px;
+        // min-width: 100%;
+    }
+
+
+}
+
+nz-select {
+    min-width: 100%;
+}
+
+nz-avatar {
+    padding-right: 10px;
+}
+
+//--------------------------------------------------------------------------------------
+::ng-deep aside {
+    border-radius: 5px;
+    width: 250px;
+    background: dimgray;
+    color: whitesmoke;
+
+}
+
+::ng-deep ng-sidebar-container {
+    z-index: 0;
+}
+
+.content {
+    margin: 5px;
+}
+
+.toggle {
+    margin: 5px;
+    //display: block;
+    //float: right;
+    outline: none;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+
+.dropdown-list {
+    label {
+        color: whitesmoke;
+    }
+
+    margin: 15px;
+}
+
+
+
+
+

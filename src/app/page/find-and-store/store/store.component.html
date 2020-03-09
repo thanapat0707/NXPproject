@@ -1,0 +1,179 @@
+<!--<section>-->
+<!--	<div class="convert-detail">-->
+<!--		<div class="row">-->
+<!--			<div class="col-md-4">-->
+<!--				&lt;!&ndash; DropDown ของ Packer &ndash;&gt;-->
+<!--				<label for="packergroup">Choose Packer ID</label>-->
+<!--				<nz-select [(ngModel)]="ConvertChoose"-->
+<!--						   nzSize="default"-->
+<!--						   nzShowSearch-->
+<!--						   nzAllowClear-->
+<!--						   (ngModelChange)="getConvertDetail(ConvertChoose)"-->
+<!--						   id="packergroup">-->
+<!--					<nz-option-->
+<!--						*ngFor="let option of listOfConvertID | orderBy: 'convert_id'"-->
+<!--						[nzLabel]="option.convert_id"-->
+<!--						[nzValue]="option.convert_id">-->
+<!--					</nz-option>-->
+<!--				</nz-select>-->
+<!--			</div>-->
+<!--		</div>-->
+<!--	</div>-->
+<!--	<div class="part-data" *ngIf="listOfConvertDetail">-->
+<!--		<nz-table-->
+<!--			[nzShowPagination]="false"-->
+<!--			nzBordered="true"-->
+<!--			#convertDetailTable [nzData]="listOfConvertDetail">-->
+<!--			<thead>-->
+<!--			<tr>-->
+<!--				<th class="text-center" nzWidth="30px">No.</th>-->
+<!--				<th class="text-center">Partdata ID</th>-->
+<!--				<th class="text-center">Part Type</th>-->
+<!--				<th class="text-center">Location</th>-->
+<!--			</tr>-->
+<!--			</thead>-->
+<!--			<tbody>-->
+<!--			<tr *ngFor="let data of convertDetailTable.data;index as i">-->
+<!--				<td class="text-center">{{i + 1}}</td>-->
+<!--				<td>{{ data.partdata_id }}</td>-->
+<!--				<td>{{ data.Partdata.Part.part_name }}</td>-->
+<!--				<td>-->
+<!--					<nz-select [(ngModel)]="Location[i]"-->
+<!--							   nzSize="default"-->
+<!--							   nzShowSearch >-->
+<!--						<nz-option-->
+<!--							*ngFor="let option of listOfLocation | orderBy: 'convert_id'"-->
+<!--							[nzLabel]="option.location_id"-->
+<!--							[nzValue]="option.location_id">-->
+<!--						</nz-option>-->
+<!--					</nz-select>-->
+<!--				</td>-->
+<!--			</tr>-->
+<!--			</tbody>-->
+<!--		</nz-table>-->
+<!--		<br>-->
+<!--		<button class="btn btn-primary" (click)="StorePart()">Store</button>-->
+<!--	</div>-->
+<!--</section>-->
+
+<section>
+	<ng-sidebar-container style="height: 78vh;">
+		<ng-sidebar [(opened)]="opened"
+					position="left"
+					mode="push"
+					dock="true"
+					dockedSize="51px">
+			<div class="dropdown-list">
+				<div class="form-group">
+					<label for="packer">Packer</label>
+					<nz-select [(ngModel)]="packerChoose"
+							   nzSize="default"
+							   nzShowSearch
+							   nzAllowClear
+							   (ngModelChange)="getPackerGroup()"
+							   id="packer">
+						<!-- | unique : 'Packer.packer_type' | orderBy: 'Packer.packer_type' -->
+						<nz-option
+							*ngFor="let option of listOfConvert | unique : 'Packer.packer_type' | orderBy: 'Packer.packer_type'"
+							[nzLabel]="option.Packer.packer_type"
+							[nzValue]="option.Packer.packer_type">
+						</nz-option>
+					</nz-select>
+				</div>
+				<div class="form-group">
+					<label for="packergroup">Packer Group</label>
+					<nz-select [(ngModel)]="packergroupChoose"
+							   nzSize="default"
+							   nzShowSearch
+							   nzAllowClear
+							   (ngModelChange)="getPackerID()"
+							   id="packergroup">
+						<!--						| unique : 'packer_group' | orderBy: 'packer_group'-->
+						<nz-option
+							*ngFor="let option of ConvertPackergroup | unique : 'Packer.packer_group' | orderBy: 'Packer.packer_group'"
+							[nzLabel]="option.Packer.packer_group"
+							[nzValue]="option.Packer.packer_group">
+						</nz-option>
+					</nz-select>
+				</div>
+				<div class="form-group">
+					<!-- DropDown ของ PackerID -->
+					<label for="packerid">Packer ID</label>
+					<nz-select [(ngModel)]="packeridChoose"
+							   nzSize="default"
+							   nzShowSearch
+							   nzAllowClear
+							   id="packerid">
+						<!--						 | unique : 'packer_id' | orderBy: 'packer_id'-->
+						<nz-option
+							*ngFor="let option of ConvertPackerid | unique : 'Packer.packer_id' | orderBy: 'Packer.packer_id'"
+							[nzLabel]="option.Packer.packer_id"
+							[nzValue]="option.Packer.packer_id">
+						</nz-option>
+					</nz-select>
+				</div>
+
+				<br>
+				<div class="form-group">
+					<button class="btn btn-primary w-100" (click)="getConvertDetail()">Find KIT</button>
+				</div>
+			</div>
+			<button *ngIf="opened" class="btn btn-light toggle" (click)="open()"><i class="fa fa-mail-reply"></i>
+			</button>
+			<button *ngIf="!opened" class="btn btn-light toggle" (click)="open()"><i class="fa fa-mail-forward"></i>
+			</button>
+		</ng-sidebar>
+
+		<!-- Content -->
+		<div ng-sidebar-content>
+			<div class="part-data" *ngIf="ConvertChoose">
+				<nz-table
+					[nzShowPagination]="false"
+					nzBordered="true"
+					(nzCurrentPageDataChange)="currentPageDataChange($event)"
+					#convertDetailTable [nzData]="ConvertChoose.ConvertDetail">
+					<thead>
+					<tr>
+						<th
+							nzShowCheckbox
+							[(nzChecked)]="isAllDisplayDataChecked"
+							[nzIndeterminate]="isIndeterminate"
+							(nzCheckedChange)="checkAll($event)"
+						></th>
+						<th class="text-center" nzWidth="30px">No.</th>
+						<th class="text-center">Part Type</th>
+						<th class="text-center">Partdata ID</th>
+						<th class="text-center">Location</th>
+					</tr>
+					</thead>
+					<tbody>
+					<tr *ngFor="let data of convertDetailTable.data;index as i">
+						<td nzShowCheckbox [(nzChecked)]="mapOfCheckedId[data.partdata_id]"
+							(nzCheckedChange)="refreshStatus()"></td>
+						<td class="text-center">{{i + 1}}</td>
+						<td>
+							<nz-avatar nzShape="square" nzSize="large"
+									   [nzSrc]="data.Partdata.Part.part_image"></nz-avatar>
+							{{ data.Partdata.Part.part_name }}</td>
+						<td>{{ data.partdata_id }}</td>
+						<td>
+							<nz-select [(ngModel)]="Location[i]"
+									   nzSize="default"
+									   nzShowSearch>
+								<!-- | orderBy: 'convert_id' -->
+								<nz-option
+									*ngFor="let option of listOfLocation"
+									nzLabel="{{option.location_id}}, {{option.description}}"
+									[nzValue]="option.location_id">
+								</nz-option>
+							</nz-select>
+						</td>
+					</tr>
+					</tbody>
+				</nz-table>
+				<br>
+				<button class="btn btn-primary" (click)="StorePart()">Store</button>
+			</div>
+		</div>
+	</ng-sidebar-container>
+</section>

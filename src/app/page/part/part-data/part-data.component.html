@@ -1,0 +1,111 @@
+<div class="container">
+	<div class="header">
+		<ul>
+			<li><a (click)="CallModal('insert')">Insert</a></li>
+		</ul>
+<!--		<div class="search row">-->
+<!--			<div class="col-sm-3">-->
+<!--				<button (click)="Search()" class="btn btn-secondary btn-in">Search</button>-->
+<!--			</div>-->
+<!--			<div class="col-sm-8">-->
+<!--				<input class="form-control" type="text" placeholder="Input PartdataID" [(ngModel)]="search">-->
+<!--			</div>-->
+<!--		</div>-->
+	</div>
+	<div class="partdata">
+		<nz-table nzPaginationPosition="top"
+				  [nzPageSize]="8"
+				  [nzScroll]="{ x: '1100px' }"
+				  #partdataTable [nzData]="listOfDisplayData">
+			<!--			nzBordered="true"-->
+			<thead (nzSortChange)="sort($event)" nzSingleSort>
+			<tr class="table-header">
+				<th nzLeft="0px" nzWidth="100px" nzShowSort nzSortKey="partdata_name">PartData</th>
+				<!--					nzShowFilter-->
+				<!--					[nzFilters]="listOfPart"-->
+				<!--					(nzFilterChange)="filter($event)"-->
+
+<!--				<th nzWidth="150px" class = "text-center">-->
+<!--					PartType-->
+<!--					<i-->
+<!--						nz-th-extra-->
+<!--						class="ant-table-filter-icon"-->
+<!--						nz-icon-->
+<!--						nz-dropdown-->
+<!--						#dropdown="nzDropdown"-->
+<!--						nzType="search"-->
+<!--						[nzDropdownMenu]="menu"-->
+<!--						[class.ant-table-filter-open]="dropdown.nzVisible"-->
+<!--						nzTrigger="click"-->
+<!--						nzPlacement="bottomRight"-->
+<!--						[nzClickHide]="false"-->
+<!--						nzTableFilter-->
+<!--					></i>-->
+<!--				</th>-->
+				<th nzCustomFilter class="text-center">
+					PartType
+					<i
+						nz-th-extra
+						class="ant-table-filter-icon"
+						nz-icon
+						nz-dropdown
+						#dropdown="nzDropdown"
+						nzType="search"
+						[nzDropdownMenu]="menu"
+						[class.ant-table-filter-open]="dropdown.nzVisible"
+						nzTrigger="click"
+						nzPlacement="bottomRight"
+						[nzClickHide]="false"
+						nzTableFilter
+					></i>
+				</th>
+				<th>Status</th>
+				<th nzShowSort nzSortKey="location_id">Location</th>
+				<th>TimeBase</th>
+				<th>Time_Use</th>
+				<th>CounterBase</th>
+				<th>Counter_Use</th>
+<!--				<th>Create_Date</th>-->
+<!--				<th>Update_Date</th>-->
+<!--				<th>PM_Date</th>-->
+<!--				<th>PM_User</th>-->
+				<th nzRight="103px" class = "text-center"></th>
+				<th nzRight="0px"></th>
+			</tr>
+			</thead>
+			<tbody *ngFor="let data of partdataTable.data">
+			<tr [ngClass]="CheckLifeTime(data.LifeTime.status)">
+<!--				<td nzLeft="0px">{{ data.partdata_id }}</td>-->
+				<td nzLeft="0px">{{ data.partdata_name }}</td>
+				<td><nz-avatar nzShape="square" nzSize="large" [nzSrc]="data.Part.part_image"></nz-avatar>{{ data.Part.part_name }}</td>
+				<td>{{ data.status }}</td>
+				<td>{{ data.location_id }}</td>
+				<td>{{ data.LifeTime.time_base }}</td>
+				<td>{{ data.LifeTime.time_use }}</td>
+				<td>{{ data.LifeTime.counter_base }}</td>
+				<td>{{ data.LifeTime.counter_use }}</td>
+<!--				<td>{{ data.create_date }}</td>-->
+<!--				<td>{{ data.update_date }}</td>-->
+<!--				<td>{{ data.LifeTime.pm_date }}</td>-->
+<!--				<td>{{ data.LifeTime.user_id }}</td>-->
+				<td nzRight="103px"><button class="btn btn-info" (click)="CallModal('update', data)">Edit</button></td>
+				<td nzRight="0px">
+					<button class="btn btn-danger" (click)="Delete(data)">Delete</button>
+				</td>
+			</tr>
+			</tbody>
+		</nz-table>
+
+		<nz-dropdown-menu #menu="nzDropdownMenu">
+			<div class="search-box">
+				<input type="text" nz-input placeholder="Search Partdata" [(ngModel)]="searchValue"/>
+				<button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">
+					Search
+				</button>
+				<button nz-button nzSize="small" (click)="reset()">Reset</button>
+			</div>
+		</nz-dropdown-menu>
+
+		<br>
+	</div>
+</div>

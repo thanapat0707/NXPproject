@@ -1,0 +1,65 @@
+<div class="container" [ngSwitch]="SQL">
+	<div class="modal-header">
+		<h4 *ngSwitchCase="'insert'" class="modal-title">Insert Part</h4>
+		<h4 *ngSwitchCase="'update'" class="modal-title">Update Part</h4>
+		<button type="button" class="close" aria-label="Close" (click)="activeModal.close()">
+			<span aria-hidden="true">&times;</span>
+		</button>
+	</div>
+	<div class="modal-body">
+		<form #PartForm="ngForm">
+			<div class="form-group row" *ngSwitchCase="'update'">
+				<label for="part_id" class="col-sm-4 col-form-label">Part ID :</label>
+				<div class="col-sm-6">
+					<input id="part_id" name="part_id" disabled [(ngModel)]="ibPartID" type="text" class="form-control"
+						   maxlength="20">
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="part_name" class="col-sm-4 col-form-label required">Part name :</label>
+				<div class="col-sm-6">
+					<div class="form-group">
+						<input id="part_name" name="part_name" [(ngModel)]="ibPartName" type="text" class="form-control"
+							   (click)="closeAlert()" required>
+						<div *ngIf="alert" class="alert alert-danger">
+							Duplicate Part name
+						</div>
+					</div>
+				</div>
+			</div>
+<!--			 --------------------------------------------------------------- -->
+			<div class="form-group row">
+				<label for="part_image" class="col-sm-4 col-form-label required">Part Image :</label>
+				<div class="col-sm-6">
+					<div class="form-group">
+						<nz-upload
+							id="part_image"
+							class="avatar-uploader"
+							nzAction="http://localhost:3000/api/image/create"
+							nzName="file"
+							nzListType="picture-card"
+							[nzShowUploadList]="false"
+							[nzBeforeUpload]="beforeUpload"
+							(nzChange)="handleChange($event)"
+						>
+							<ng-container *ngIf="!image">
+								<i class="upload-icon" nz-icon [nzType]="loading ? 'loading' : 'plus'"></i>
+								<div class="ant-upload-text">Upload</div>
+							</ng-container>
+							<img *ngIf="image" [src]="image" class="avatar" />
+						</nz-upload>
+					</div>
+				</div>
+			</div>
+<!--			 --------------------------------------------------------------- -->
+		</form>
+	</div>
+	<div class="modal-footer">
+		<button *ngSwitchCase="'insert'" [disabled]="!PartForm.form.valid" (click)="Insert()" type="submit"
+				class="btn btn-primary w-25">Insert
+		</button>
+		<button *ngSwitchCase="'update'" [disabled]="!PartForm.form.valid" (click)="Update()" type="submit" class="btn btn-primary w-25">Update
+		</button>
+		<button (click)="activeModal.close()" type="submit" class="btn btn-secondary w-25">Cancel</button>
+	</div>
+</div>

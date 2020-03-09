@@ -1,0 +1,36 @@
+<div class="header">
+	<ul>
+		<li><a (click) = "CallModal('insert')">Insert</a></li>
+	</ul>
+</div>
+<div class="container">
+	<div class="packer">
+		<nz-table nzPaginationPosition="top"
+				  nzBordered="true"
+				  [nzPageSize]="7"
+				  #packerTable [nzData]="listOfPacker">
+			<thead>
+			<tr>
+				<th class="text-center">Packer</th>
+				<th class="text-center">Packer Group</th>
+				<th class="text-center">Packer ID</th>
+				<th class="text-center">Packer UPH</th>
+				<th nzWidth="30px"></th>
+				<th nzWidth="50px"></th>
+			</tr>
+			</thead>
+			<tbody>
+			<tr *ngFor="let data of packerTable.data">
+				<td>{{ data.packer_type }}</td>
+				<td>{{ data.packer_group }}</td>
+				<td>{{ data.packer_id }}</td>
+				<td>{{ data.packer_uph }}</td>
+				<td><button class="btn btn-info" (click)="CallModal('update', data)">Edit</button></td>
+				<td><button class="btn btn-danger" (click)="Delete(data.packer_id)">Delete</button></td>
+			</tr>
+			</tbody>
+		</nz-table>
+	</div>
+</div>
+
+

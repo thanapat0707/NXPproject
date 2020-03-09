@@ -1,0 +1,136 @@
+* {
+    // background: beige;
+    color: black;
+}
+
+nz-select {
+    width: 100%;
+}
+
+section {
+    background: ghostwhite;
+    // margin: 5px;
+    border-radius: 5px;
+}
+
+.result {
+    margin: 10px;
+}
+
+.container {
+    // border-radius: 15px;
+    min-width: 100%;
+    // padding: 10px;
+    //.dropdown-list {
+    //    .row {
+    //        .col-sm {
+    //            margin: 15px;
+    //        }
+    //    }
+    //}
+}
+
+.dropdown-list {
+    label {
+        color: whitesmoke;
+    }
+
+    margin: 15px;
+}
+
+.button-part {
+    width: 40px;
+    height: 40px;
+    background: white;
+    border: 3px solid dimgray;
+    border-radius: 8px;
+    outline: none;
+}
+
+.button-part-alert {
+    width: 40px;
+    height: 40px;
+    // background: lawngreen;
+    background: red;
+    border: 3px solid dimgray;
+    border-radius: 8px;
+    outline: none;
+}
+
+.button-part-lost {
+    width: 40px;
+    height: 40px;
+    // background: lawngreen;
+    background: #ffaa00;
+    border: 3px solid dimgray;
+    border-radius: 8px;
+    outline: none;
+}
+
+.button-part:disabled {
+    background: gray;
+}
+
+.button-part:disabled:hover {
+    background: gray;
+}
+
+.button-part:hover {
+    background: lightskyblue;
+}
+
+.back-choose {
+    background: lawngreen;
+    border: 3px solid dimgray;
+    border-radius: 8px;
+    outline: none;
+}
+
+.back-choose:after {
+    font-size: 25px;
+    content: '\002714';
+}
+
+.null {
+    display: none;
+}
+
+.table-header {
+    th {
+        background: gray;
+    }
+}
+
+.location {
+    width: 100px;
+    height: 100px;
+}
+
+
+//--------------------------------------------------------------------------------------
+::ng-deep aside {
+    border-radius: 5px;
+    width: 250px;
+    background: dimgray;
+    color: whitesmoke;
+
+}
+
+::ng-deep ng-sidebar-container {
+    z-index: 0;
+}
+
+.content {
+    margin: 5px;
+}
+
+.toggle {
+    margin: 5px;
+    //display: block;
+    //float: right;
+    outline: none;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+

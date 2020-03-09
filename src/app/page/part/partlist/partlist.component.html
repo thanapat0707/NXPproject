@@ -1,0 +1,97 @@
+<div class="header">
+	<ul>
+		<li><a (click)="CallModal('insert')">Insert</a></li>
+	</ul>
+</div>
+<div class="container">
+	<div class="partlist table-header">
+		<nz-table nzPaginationPosition="top"
+				  nzBordered="true"
+				  [nzPageSize]="8"
+				  [nzScroll]="{ x: '1100px' }"
+				  #partlistTable [nzData]="listOfDisplayData">
+			<thead>
+			<tr class="table-header">
+				<th nzLeft="0px" class="text-center">
+					Packer ID
+					<i
+						nz-th-extra
+						class="ant-table-filter-icon"
+						nz-icon
+						nz-dropdown
+						#dropdown="nzDropdown"
+						nzType="search"
+						[nzDropdownMenu]="menu"
+						[class.ant-table-filter-open]="dropdown.nzVisible"
+						nzTrigger="click"
+						nzPlacement="bottomRight"
+						[nzClickHide]="false"
+						nzTableFilter
+					></i></th>
+				<th nzLeft="90px" class="text-center">Package</th>
+				<th class="text-center">Part#1</th>
+				<th class="text-center">Part#2</th>
+				<th class="text-center">Part#3</th>
+				<th class="text-center">Part#4</th>
+				<th class="text-center">Part#5</th>
+				<th class="text-center">Part#6</th>
+				<th class="text-center">Part#7</th>
+				<th class="text-center">Part#8</th>
+				<th class="text-center">Part#9</th>
+				<th class="text-center">Part#10</th>
+				<th class="text-center">Part#11</th>
+				<th class="text-center">Part#12</th>
+				<th class="text-center">Part#13</th>
+				<th class="text-center">Part#14</th>
+				<th class="text-center">Part#15</th>
+				<th class="text-center">Part#16</th>
+				<th class="text-center">Part#17</th>
+				<th class="text-center">Part#18</th>
+				<th class="text-center">Part#19</th>
+				<th class="text-center">Part#20</th>
+				<th nzRight="101px" class="text-center"></th>
+				<th nzRight="0px" class="text-center"></th>
+
+			</tr>
+			</thead>
+			<tbody>
+			<tr class="text-center" *ngFor="let data of partlistTable.data">
+				<td nzLeft="0px">{{ data.packer_id }}</td>
+				<td nzLeft="90px"><span nz-popover nzType="primary"
+										[nzPopoverContent]="data.SOT.package_name">{{ data.sot_id }}</span></td>
+				<td *ngFor="let index of partSize">
+					<ng-template #PartImage>
+						<nz-avatar nzShape="square" [nzSize]="120"
+								   [nzSrc]="data.PartlistDetail[index].Part.part_image"></nz-avatar>
+					</ng-template>
+					<h6 *ngIf="data.PartlistDetail[index] != null"
+						nzType="primary"
+						nz-popover
+						[nzPopoverContent]="PartImage">
+						{{data.PartlistDetail[ index ].Part.part_name}}
+					</h6>
+				</td>
+				<td nzRight="101px">
+					<button class="btn btn-info" (click)="CallModal('update', data)">Edit</button>
+				</td>
+				<td nzRight="0px">
+					<button class="btn btn-danger" (click)="Delete(data)">Delete</button>
+				</td>
+			</tr>
+			</tbody>
+		</nz-table>
+
+		<nz-dropdown-menu #menu="nzDropdownMenu">
+			<div class="search-box">
+				<input type="text" nz-input placeholder="Search Partdata" [(ngModel)]="searchValue"/>
+				<button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">
+					Search
+				</button>
+				<button nz-button nzSize="small" (click)="reset()">Reset</button>
+			</div>
+		</nz-dropdown-menu>
+	</div>
+</div>
+
+
+

@@ -1,0 +1,19 @@
+<div class="modal-header">
+	<h4 class="modal-title" id="modal-basic-title">Please input userID</h4>
+<!--	<button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">-->
+<!--		<span aria-hidden="true">&times;</span>-->
+<!--	</button>-->
+</div>
+<div class="modal-body">
+	<div class="form-group">
+		<input [(ngModel)]="data" type="text" class="form-control" maxlength="8" (click)="closeAlert()">
+		<div *ngIf="alert" class="alert alert-danger">
+			User doesn't exist
+		</div>
+	</div>
+</div>
+<div class="modal-footer">
+	<button (click)="sentBack()" type="submit" class="btn btn-primary w-25">Submit</button>
+	<button (click)="activeModal.close()" type="submit" class="btn btn-secondary w-25">Cancel</button>
+</div>
+
