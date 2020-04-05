@@ -10,7 +10,7 @@ import { PartlistDetailEntity } from '../partlist/entity/partlist-detail.entity'
 import { ConvertDetailEntity } from '../conversion/entity/convert-detail.entity';
 import { PartdataLifetimeEntity } from '../partdata/entity/partdata-lifetime.entity';
 import { LocationEntity } from '../location/entity/location.entity';
-import { LocationMappingEntity } from '../location/entity/location-mapping.entity';
+// import { LocationMappingEntity } from '../location/entity/location-mapping.entity';
 
 export const databaseProviders = [
     {
@@ -36,7 +36,7 @@ export const databaseProviders = [
                 SOTEntity,
                 UserEntity,
                 LocationEntity,
-                LocationMappingEntity,
+                // LocationMappingEntity,
             ] );
             await sequelize.sync();
             return sequelize;

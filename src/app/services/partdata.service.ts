@@ -31,23 +31,27 @@ export class PartdataService {
         return this.http.get<IPartData[]>( url );
     }
 
+    selectAlertPM(): Observable<IPartData[]> {
+        const url = `${this.PartdataLifeTimeURL}/PM`;
+        return this.http.get<IPartData[]>( url );
+    }
+
     updatePartdata( data: any ) {
         return this.http.put( this.PartdataURL, data );
     }
 
-    // updatePartdataLifeTime( data: any ) {
-    //     return this.http.put( this.PartdataLifeTimeURL, data );
-    // }
-
     updatePartdataToPacker( data: any ) {
         const url = `${this.PartdataURL}/packer`;
-        // console.log( 'data in service: ', data );
         return this.http.put( url, data );
     }
 
     updatePartdataToStore( data: any ) {
         const url = `${this.PartdataURL}/store`;
-        // console.log( 'data in service: ', data );
+        return this.http.put( url, data );
+    }
+
+    switchPartLocation( data: any ) {
+        const url = `${this.PartdataURL}/switch`;
         return this.http.put( url, data );
     }
 
@@ -55,19 +59,13 @@ export class PartdataService {
         return this.http.post( this.PartdataURL, data );
     }
 
-    insertPartdataLifeTime( data: any ) {
-        return this.http.post( this.PartdataLifeTimeURL, data );
-    }
-
     PM( data: any ) {
         const url = `${this.PartdataLifeTimeURL}/PM`;
-        // console.log('PM Work');
         return this.http.put( url, data );
     }
 
     deletePartdata( id: string ) {
         const url = `${this.PartdataURL}/${id}`;
-        // console.log( 'data in service: ', id );
         return this.http.delete( url );
     }
 

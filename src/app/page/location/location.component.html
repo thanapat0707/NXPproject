@@ -1,10 +1,18 @@
-<div class="header">
-	<ul>
-		<li><a (click)="CallModal('insert')">Insert</a></li>
-		<li><a (click)="CallModal('rack')">Create Rack</a></li>
-	</ul>
-</div>
 <div class="container">
+	<div class="header">
+		<ul>
+			<li><a (click)="CallModal('rack')">Create Rack</a></li>
+			<li><a (click)="CallModal('insert')">Insert</a></li>
+		</ul>
+		<div class="search row">
+			<div class="col-sm-3">
+				<button (click)="search()" class="btn btn-secondary btn-in">Search</button>
+			</div>
+			<div class="col-sm-8">
+				<input class="form-control" type="text" [(ngModel)]="searchValue" placeholder="LocationID or Description">
+			</div>
+		</div>
+	</div>
 	<div class="location table-header">
 		<nz-table nzPaginationPosition="top"
 				  nzBordered="true"
@@ -15,39 +23,41 @@
 				<th nzWidth="30px" class="text-center">Rack</th>
 				<th nzCustomFilter class="text-center">
 					Location
-					<i
-						nz-th-extra
-						class="ant-table-filter-icon"
-						nz-icon
-						nz-dropdown
-						#dropdown="nzDropdown"
-						nzType="search"
-						[nzDropdownMenu]="menu"
-						[class.ant-table-filter-open]="dropdown.nzVisible"
-						nzTrigger="click"
-						nzPlacement="bottomRight"
-						[nzClickHide]="false"
-						nzTableFilter
-					></i>
+<!--					<i-->
+<!--						nz-th-extra-->
+<!--						class="ant-table-filter-icon"-->
+<!--						nz-icon-->
+<!--						nz-dropdown-->
+<!--						#dropdown="nzDropdown"-->
+<!--						nzType="search"-->
+<!--						[nzDropdownMenu]="menu"-->
+<!--						[class.ant-table-filter-open]="dropdown.nzVisible"-->
+<!--						nzTrigger="click"-->
+<!--						nzPlacement="bottomRight"-->
+<!--						[nzClickHide]="false"-->
+<!--						nzTableFilter-->
+<!--					></i>-->
 				</th>
-<!--				<th class="text-center">Empty</th>-->
+<!--								<th class="text-center">Empty</th>-->
 				<th nzCustomFilter class="text-center">
 					Description
-					<i
-						nz-th-extra
-						class="ant-table-filter-icon"
-						nz-icon
-						nz-dropdown
-						#dropdown="nzDropdown"
-						nzType="search"
-						[nzDropdownMenu]="menu"
-						[class.ant-table-filter-open]="dropdown.nzVisible"
-						nzTrigger="click"
-						nzPlacement="bottomRight"
-						[nzClickHide]="false"
-						nzTableFilter
-					></i></th>
+<!--					<i-->
+<!--						nz-th-extra-->
+<!--						class="ant-table-filter-icon"-->
+<!--						nz-icon-->
+<!--						nz-dropdown-->
+<!--						#dropdown="nzDropdown"-->
+<!--						nzType="search"-->
+<!--						[nzDropdownMenu]="menu"-->
+<!--						[class.ant-table-filter-open]="dropdown.nzVisible"-->
+<!--						nzTrigger="click"-->
+<!--						nzPlacement="bottomRight"-->
+<!--						[nzClickHide]="false"-->
+<!--						nzTableFilter-->
+<!--					></i>-->
+				</th>
 				<th class="text-center">Part Data</th>
+<!--								<th nzWidth="50px"></th>-->
 				<th nzWidth="30px"></th>
 				<th nzWidth="50px"></th>
 			</tr>
@@ -56,31 +66,35 @@
 			<tr *ngFor="let data of locationTable.data | orderBy: 'location_id'">
 				<td nzLeft="0px" class="text-center">{{ data.rack_id }}</td>
 				<td class="text-center">{{ data.location_id }}</td>
-<!--				<td class="text-center">{{ data.empty }}</td>-->
+<!--								<td class="text-center">{{ data.empty }}</td>-->
 				<td class="text-center">{{ data.location_description }}</td>
 				<td>
-					<span class = "part-in-location" *ngFor="let part of data.Partdata">
+					<span class="part-in-location" *ngFor="let part of data.Partdata">
 						<nz-avatar nzShape="square" nzSize="large" [nzSrc]="part.Part.part_image"></nz-avatar>
-						{{ part.partdata_name }}
+						{{part.Part.part_name}}: {{ part.partdata_name }}
 					</span>
 				</td>
-<!--				<td><button class="btn btn-info" (click)="Update(data.location_id)">Edit</button></td>-->
-				<td><button class="btn btn-info" (click)="CallModal('update', data)">Edit</button></td>
-				<td><button class="btn btn-danger" (click)="Delete(data.location_id)">Delete</button></td>
+<!--								<td><button class="btn btn-warning" (click)="Update(data.location_id)">Empty</button></td>-->
+				<td>
+					<button class="btn btn-info" (click)="CallModal('update', data)">Edit</button>
+				</td>
+				<td>
+					<button class="btn btn-danger" (click)="Delete(data.location_id)">Delete</button>
+				</td>
 
 			</tr>
 			</tbody>
 		</nz-table>
 
-		<nz-dropdown-menu #menu="nzDropdownMenu">
-			<div class="search-box">
-				<input type="text" nz-input placeholder="Search Partdata" [(ngModel)]="searchValue"/>
-				<button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">
-					Search
-				</button>
-				<button nz-button nzSize="small" (click)="reset()">Reset</button>
-			</div>
-		</nz-dropdown-menu>
+<!--		<nz-dropdown-menu #menu="nzDropdownMenu">-->
+<!--			<div class="search-box">-->
+<!--				<input type="text" nz-input placeholder="Search Partdata" [(ngModel)]="searchValue"/>-->
+<!--				<button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">-->
+<!--					Search-->
+<!--				</button>-->
+<!--				<button nz-button nzSize="small" (click)="reset()">Reset</button>-->
+<!--			</div>-->
+<!--		</nz-dropdown-menu>-->
 	</div>
 </div>
 

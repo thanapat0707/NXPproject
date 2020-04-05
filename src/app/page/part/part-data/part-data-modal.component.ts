@@ -15,6 +15,7 @@ export class PartDataModalComponent implements OnInit {
 
     @Input() public SQL;
     @Input() public PartData;
+    @Input() public ConvertID;
 
     private alert = false;
 
@@ -24,7 +25,7 @@ export class PartDataModalComponent implements OnInit {
 
     private ibPartdataID: string;
     private ibPartdataName: string;
-    private ibPartname: string;
+    private ibPartID: string;
     private ibTimebase: number;
     private ibTimeuse: number;
     private ibCounterbase: number;
@@ -83,7 +84,7 @@ export class PartDataModalComponent implements OnInit {
         this.ibPartdataID = this.PartData.partdata_id;
         this.ibPartdataName = this.PartData.partdata_name;
         // console.log( 'name: ', this.ibPartdataName );
-        this.ibPartname = this.PartData.part_id;
+        this.ibPartID = this.PartData.part_id;
         this.ibStatus = this.PartData.status;
         // console.log( 'location_id: ', this.PartData.location_id );
         this.ibLocation = this.PartData.location_id;
@@ -101,10 +102,12 @@ export class PartDataModalComponent implements OnInit {
             this.alert = true;
             return;
         } else {
+            const Part = this.listOfPart.find(part => part.part_id === this.ibPartID);
             const data = {
                 // partdata_id: this.ibPartdataID,
                 partdata_name: this.ibPartdataName,
-                part_id: this.ibPartname,
+                part_id: this.ibPartID,
+                part_name: Part.part_name,
                 time_base: this.ibTimebase,
                 counter_base: this.ibCounterbase,
                 location_id: this.ibLocation,
@@ -120,9 +123,11 @@ export class PartDataModalComponent implements OnInit {
         const data = {
             partdata_id: this.ibPartdataID || null,
             partdata_name: this.ibPartdataName || null,
-            part_id: this.ibPartname || null,
+            part_id: this.ibPartID || null,
             time_base: this.ibTimebase,
+            time_use: this.ibTimeuse,
             counter_base: this.ibCounterbase,
+            counter_use: this.ibCounteruse,
             location_id: this.ibLocation,
         };
         // console.log( 'data update: ', data );
@@ -138,17 +143,20 @@ export class PartDataModalComponent implements OnInit {
             } else {
                 // console.log( 'ERROR!!!' );
             }
-        } );
+        }, (error) => {} );
         // console.log( 'PM: ', partdataID );
     }
 
     PM( user, part ) {
         const data = {
             user_id: user,
-            partdata_id: part
+            partdata_id: part,
+            convert_id: this.ConvertID,
         };
-        this.partdataService.PM( data ).subscribe();
         // console.log( 'PM: ', data );
+        this.partdataService.PM( data ).subscribe( () => {
+            this.sentBack('');
+        });
         this.modalService.open( CompleteComponent );
     }
 

@@ -10,7 +10,7 @@
 				  [nzPageSize]="8"
 				  [nzScroll]="{ x: '1100px' }"
 				  #partlistTable [nzData]="listOfDisplayData">
-			<thead>
+			<thead (nzSortChange)="sort($event)" nzSingleSort>
 			<tr class="table-header">
 				<th nzLeft="0px" class="text-center">
 					Packer ID
@@ -28,7 +28,7 @@
 						[nzClickHide]="false"
 						nzTableFilter
 					></i></th>
-				<th nzLeft="90px" class="text-center">Package</th>
+				<th nzLeft="90px" class="text-center" nzShowSort nzSortKey="sot_id">Package</th>
 				<th class="text-center">Part#1</th>
 				<th class="text-center">Part#2</th>
 				<th class="text-center">Part#3</th>

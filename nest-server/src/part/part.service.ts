@@ -2,7 +2,7 @@ import { Injectable, Inject, HttpException, HttpStatus } from '@nestjs/common';
 import { PartEntity } from './entity/part.entity';
 import { PartdataService } from '../partdata/partdata.service';
 import { PartlistDetailService } from '../partlist/partlist-detail.service';
-import { LocationMappingService } from '../location/location-mapping.service';
+// import { LocationMappingService } from '../location/location-mapping.service';
 
 @Injectable()
 
@@ -12,7 +12,7 @@ export class PartService {
         @Inject( 'PartRepository' ) private readonly partRepository: typeof PartEntity,
         private readonly partdataService: PartdataService,
         private readonly partlistDetailService: PartlistDetailService,
-        private readonly locationMappingService: LocationMappingService,
+        // private readonly locationMappingService: LocationMappingService,
     ) {
     }
 

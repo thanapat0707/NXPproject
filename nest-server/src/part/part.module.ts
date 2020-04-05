@@ -13,11 +13,16 @@ import { PartlistDetailService } from '../partlist/partlist-detail.service';
 import { PartlistDetailEntity } from '../partlist/entity/partlist-detail.entity';
 import { PartdataModule } from '../partdata/partdata.module';
 import { PartlistModule } from '../partlist/partlist.module';
-import { LocationMappingService } from '../location/location-mapping.service';
-import { LocationMappingEntity } from '../location/entity/location-mapping.entity';
+// import { LocationMappingService } from '../location/location-mapping.service';
+// import { LocationMappingEntity } from '../location/entity/location-mapping.entity';
 import { LocationModule } from '../location/location.module';
 import { LocationService } from '../location/location.service';
 import { LocationEntity } from '../location/entity/location.entity';
+import { ConvertService } from '../conversion/convert.service';
+import { ConvertEntity } from '../conversion/entity/convert.entity';
+import { ConvertDetailService } from '../conversion/convert-detail.service';
+import { ConvertDetailEntity } from '../conversion/entity/convert-detail.entity';
+import { ConvertModule } from '../conversion/convert.module';
 
 @Module( {
     imports: [
@@ -25,6 +30,7 @@ import { LocationEntity } from '../location/entity/location.entity';
         PartdataModule,
         PartlistModule,
         LocationModule,
+        ConvertModule,
     ],
     controllers: [ PartController ],
     providers: [
@@ -58,10 +64,20 @@ import { LocationEntity } from '../location/entity/location.entity';
             provide: 'LocationRepository',
             useValue: LocationEntity,
         },
-        LocationMappingService,
+        // LocationMappingService,
+        // {
+        //     provide: 'LocationMappingRepository',
+        //     useValue: LocationMappingEntity,
+        // },
+        ConvertService,
         {
-            provide: 'LocationMappingRepository',
-            useValue: LocationMappingEntity,
+            provide: 'ConvertRepository',
+            useValue: ConvertEntity,
+        },
+        ConvertDetailService,
+        {
+            provide: 'ConvertDetailRepository',
+            useValue: ConvertDetailEntity,
         },
     ],
 } )

@@ -7,7 +7,6 @@ import { LocationModalComponent } from './location-modal.component';
 import { AppComponent } from '../../app.component';
 import { AppController } from '../../app.controller';
 import { ErrorComponent } from '../../modal/error/error.component';
-import { PartlistModalComponent } from '../part/partlist/partlist-modal.component';
 
 @Component( {
     selector: 'app-location',
@@ -44,7 +43,7 @@ export class LocationComponent implements OnInit {
         } );
     }
 
-    CallModal( sql, location = {} ) {
+    CallModal( sql, location = {}) {
         let modalRef;
         // if ( sql === 'update' ) {
         //     modalRef = this.modalService.open( LocationModalComponent, { size: 'lg' } );
@@ -54,8 +53,9 @@ export class LocationComponent implements OnInit {
         modalRef.componentInstance.SQL = sql;
         modalRef.componentInstance.Location = location;
         modalRef.result.then( ( result ) => {
+            // console.log('result: ', result);
             if ( result ) {
-                switch( sql ) {
+                switch ( sql ) {
                     case 'insert' :
                         this.locationService.insertLocation( result ).subscribe( () => {
                             this.ngOnInit();
@@ -76,14 +76,14 @@ export class LocationComponent implements OnInit {
             } else {
                 // console.log( 'ERROR!!!' );
             }
-        } );
+        }, (error) => {} );
     }
 
     Update( id ) {
-        // this.locationService.updateCell( [ id ] ).subscribe( () => {
-        //     this.modalService.open( CompleteComponent );
-        //     this.ngOnInit();
-        // } );
+        this.locationService.updateCell( [ id ] ).subscribe( () => {
+            this.modalService.open( CompleteComponent );
+            this.ngOnInit();
+        } );
     }
 
     Delete( id: string ) {
@@ -99,10 +99,11 @@ export class LocationComponent implements OnInit {
     // --------------------------------------------------------------------------------
 
     search() {
+        console.log('search: ', this.searchValue);
         const filterFunc = ( item: { location_id: string; location_description: string; } ) => {
             return (
-                item.location_id.indexOf( this.searchValue ) !== -1 &&
-                item.location_description.indexOf( this.searchValue ) !== -1
+                item.location_id.indexOf( this.searchValue ) !== -1
+                || item.location_description.toLowerCase().indexOf( this.searchValue.toLowerCase() ) !== -1
             );
         };
         const data = this.listOfLocation.filter( ( item: { location_id: string; location_description: string; } ) => filterFunc( item ) );

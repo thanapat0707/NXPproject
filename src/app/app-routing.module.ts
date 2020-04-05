@@ -44,7 +44,7 @@ const routes: Routes = [
             { path: '', redirectTo: 'user', pathMatch: 'full' },
         ]
     },
-    { path: '**', component: PageNotFoundComponent }
+    { path: '**', component: PageNotFoundComponent },
 ];
 
 @NgModule( {

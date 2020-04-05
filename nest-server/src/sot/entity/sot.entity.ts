@@ -17,22 +17,23 @@ export class SOTEntity extends Model<SOTEntity> {
     package_name: string;
 
     @Default(1)
-    @Column({ type: DataType.INTEGER })
+    @Column({ type: DataType.DECIMAL })
         // tslint:disable-next-line:variable-name
     package_width: number;
 
     @Default(1)
-    @Column({ type: DataType.INTEGER })
+    @Column({ type: DataType.DECIMAL })
         // tslint:disable-next-line:variable-name
     package_length: number;
 
     @Default(1)
-    @Column({ type: DataType.INTEGER })
+    @Column({ type: DataType.DECIMAL })
         // tslint:disable-next-line:variable-name
     package_thickness: number;
 
     @Default(1)
-    @Column({ type: DataType.INTEGER })
+    @Column({ type: DataType.DECIMAL })
         // tslint:disable-next-line:variable-name
     package_cwidth: number;
+
 }

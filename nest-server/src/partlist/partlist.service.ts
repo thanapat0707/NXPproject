@@ -8,6 +8,7 @@ import { PartdataEntity } from '../partdata/entity/partdata.entity';
 import { PartEntity } from '../part/entity/part.entity';
 import { PartdataLifetimeEntity } from '../partdata/entity/partdata-lifetime.entity';
 import { PartlistDetailService } from './partlist-detail.service';
+import { LocationEntity } from '../location/entity/location.entity';
 
 @Injectable()
 
@@ -34,8 +35,14 @@ export class PartlistService {
                                         model: PartdataEntity,
                                         include: [
                                             {
+                                                model: PartEntity,
+                                            },
+                                            {
                                                 model: PartdataLifetimeEntity,
-                                            } ],
+                                            },
+                                            {
+                                                model: LocationEntity,
+                                            }],
                                     } ],
                             } ],
                     } ],
@@ -69,9 +76,11 @@ export class PartlistService {
     }
 
     async delete( data: any ): Promise<PartlistEntity> {
-        this.partlistDetailService.deleteAll( data ).then( () => {
-            this.partlistRepository.destroy( { where: { partlist_id: data.id } } ).then();
-        } );
+        // this.partlistDetailService.deleteAll( data ).then( () => {
+        //     this.partlistRepository.destroy( { where: { partlist_id: data.id } } ).then();
+        // } );
+        await this.partlistDetailService.deleteAll( data );
+        await this.partlistRepository.destroy( { where: { partlist_id: data.id } } );
         return;
     }
 }

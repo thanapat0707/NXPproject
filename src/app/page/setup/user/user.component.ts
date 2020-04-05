@@ -57,7 +57,7 @@ export class UserComponent implements OnInit {
             } else {
                 // console.log( 'ERROR!!!' );
             }
-        } );
+        }, (error) => {}  );
     }
 
     Delete( id: string ) {

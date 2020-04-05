@@ -21,7 +21,6 @@ export class PartlistComponent implements OnInit {
     private searchValue = '';
     private sortName: string | null = null;
     private sortValue: string | null = null;
-    private listOfSearchData: string[] = [];
     private listOfDisplayData: any;
 
     constructor( private partlistService: PartlistService,
@@ -82,7 +81,7 @@ export class PartlistComponent implements OnInit {
             } else {
                 // console.log( 'ERROR!!!' );
             }
-        } );
+        }, (error) => {}  );
     }
 
     Delete( partlist: any ) {
@@ -102,8 +101,7 @@ export class PartlistComponent implements OnInit {
     search() {
         const filterFunc = ( item: { packer_id: string; sot_id: string } ) => {
             return (
-                (this.listOfSearchData.length ? this.listOfSearchData.some( article => item.packer_id === article ) : true)
-                && item.packer_id.indexOf( this.searchValue ) !== -1
+                item.packer_id.indexOf( this.searchValue ) !== -1
             );
         };
         const data = this.PartList.filter( ( item: { packer_id: string; sot_id: string } ) => filterFunc( item ) );
@@ -118,6 +116,12 @@ export class PartlistComponent implements OnInit {
                 ? 1
                 : -1
         );
+    }
+
+    sort( sort: { key: string; value: string } ): void {
+        this.sortName = sort.key;
+        this.sortValue = sort.value;
+        this.search();
     }
 
     reset(): void {

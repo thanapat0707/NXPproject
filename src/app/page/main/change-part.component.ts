@@ -30,19 +30,20 @@ export class ChangePartComponent implements OnInit {
         this.partdataService.selectPartdataFromPartID( partID ).subscribe( data => this.listOfPartdata = data );
     }
 
-    Confirm( partdataID ) {
+    Confirm( partdata ) {
         const modalRef = this.modalService.open( KitConfirmComponent, { backdrop: 'static' } );
         modalRef.result.then( ( user ) => {
             if ( user ) {
                 this.sentBack( {
                     user_id: user,
-                    partdata_id: partdataID,
+                    partdata_id: partdata.partdata_id,
+                    part_name: partdata.Part.part_name,
+                    location_id: partdata.location_id,
                 } );
             } else {
                 // console.log( 'ERROR!!!' );
             }
         } );
-        // console.log( 'PM: ', partnumber );
     }
 
     sentBack( data ) {

@@ -8,18 +8,24 @@ import { PartdataLifetimeEntity } from '../partdata/entity/partdata-lifetime.ent
 import { PartdataService } from '../partdata/partdata.service';
 import { PartdataEntity } from '../partdata/entity/partdata.entity';
 import { PartdataModule } from '../partdata/partdata.module';
-import { LocationMappingController } from './location-mapping.controller';
-import { LocationMappingService } from './location-mapping.service';
-import { LocationMappingEntity } from './entity/location-mapping.entity';
+import { ConvertService } from '../conversion/convert.service';
+import { ConvertEntity } from '../conversion/entity/convert.entity';
+import { ConvertModule } from '../conversion/convert.module';
+import { ConvertDetailService } from '../conversion/convert-detail.service';
+import { ConvertDetailEntity } from '../conversion/entity/convert-detail.entity';
+// import { LocationMappingController } from './location-mapping.controller';
+// import { LocationMappingService } from './location-mapping.service';
+// import { LocationMappingEntity } from './entity/location-mapping.entity';
 
 @Module( {
     imports: [
         DatabaseModule,
         PartdataModule,
+        ConvertModule,
     ],
     controllers: [
         LocationController,
-        LocationMappingController,
+        // LocationMappingController,
     ],
     providers: [
         LocationService,
@@ -27,11 +33,11 @@ import { LocationMappingEntity } from './entity/location-mapping.entity';
             provide: 'LocationRepository',
             useValue: LocationEntity,
         },
-        LocationMappingService,
-        {
-            provide: 'LocationMappingRepository',
-            useValue: LocationMappingEntity,
-        },
+        // LocationMappingService,
+        // {
+        //     provide: 'LocationMappingRepository',
+        //     useValue: LocationMappingEntity,
+        // },
         PartdataService,
         {
             provide: 'PartdataRepository',
@@ -41,6 +47,16 @@ import { LocationMappingEntity } from './entity/location-mapping.entity';
         {
             provide: 'PartdataLifetimeRepository',
             useValue: PartdataLifetimeEntity,
+        },
+        ConvertService,
+        {
+            provide: 'ConvertRepository',
+            useValue: ConvertEntity,
+        },
+        ConvertDetailService,
+        {
+            provide: 'ConvertDetailRepository',
+            useValue: ConvertDetailEntity,
         },
     ],
 } )

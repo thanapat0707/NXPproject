@@ -54,14 +54,23 @@ export class PartdataController {
         return res.status( HttpStatus.OK ).json( partdata );
     }
 
+    @Put('/switch')
+    switchPartLocation( @Res() res, @Body() data ) {
+        const partdata = this.partdataService.switchPartLocation( data );
+        // const partdata = await this.partdataService.update( data );
+        return res.status( HttpStatus.OK ).json( partdata );
+    }
+
     @Put()
     async update( @Res() res, @Body() data ) {
+        // const partdata = this.partdataService.update( data );
         const partdata = await this.partdataService.update( data );
         return res.status( HttpStatus.OK ).json( partdata );
     }
 
     @Post()
     async createPartdata( @Res() res, @Body() Partdata ) { // ไม่ได้ใช้ DTO
+        // const partdata = this.partdataService.create( Partdata );
         const partdata = await this.partdataService.create( Partdata );
         return res.status( HttpStatus.OK ).json( partdata );
     }

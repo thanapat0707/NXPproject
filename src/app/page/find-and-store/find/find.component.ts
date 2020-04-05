@@ -78,12 +78,23 @@ export class FindComponent implements OnInit {
         this.getPartDataAll();
         this.getSOTAll();
         this.getPartNameAll();
+        this.CheckStore();
 
         // this.appController.MenuButtons = null;
         this.appController.MenuActive = 'FIND';
         // console.log('Find');
 
         this.Test = this.findAndStoreService.Find;
+    }
+
+    CheckStore() {
+        this.convertService.selectConvert( false ).subscribe( data => {
+            // console.log('store: ', data);
+            if ( data.length ) {
+                const modalRef = this.modalService.open( WarningComponent );
+                modalRef.componentInstance.msg = 'Please store part before convert again';
+            }
+        } );
     }
 
     // Initial Data
@@ -151,8 +162,12 @@ export class FindComponent implements OnInit {
                 // console.log( 'convertBefore: ', data, ' | sot: ', this.sotBeforeChoose );
             }
         } );
+        // console.log('listOfPartlist: ', this.listOfPartlist);
         // ดึงข้อมูล SOT มาจาก partlist table ที่จับคู่กับ Packer อยู่แล้ว
-        this.sot = this.listOfPartlist.filter( article => article.packer_id === this.packeridChoose );
+        this.sot = this.listOfPartlist.filter( article =>
+            article.packer_id === this.packeridChoose && article.sot_id !== this.sotBeforeChoose
+        );
+        // console.log('sot: ', this.sot);
     }
 
     // // ---------------------------------------------------------------------------------------------------
@@ -248,23 +263,42 @@ export class FindComponent implements OnInit {
         const choose = [];
         let find;
         for ( const part of partlist ) {
-            if ( !part.Part.PartData.length) {
+            if ( !part.Part.PartData.length ) {
+                // console.log( 'Nothing to choose' );
                 return [];
             } else {
+                // console.log( 'location: ', location );
+                // console.log( 'PartData: ', part.Part.PartData );
                 this.part.push( part.Part.part_id );
-                find = part.Part.PartData.find( data => data.location_id === location );
+                find = part.Part.PartData.find( data =>
+                    data.location_id === location &&
+                    data.status !== 'packer' &&
+                    data.status !== 'lost' &&
+                    data.LifeTime.status !== 'alert'
+                );
+                // console.log( 'find: ', find );
                 if ( find ) {
-                    // console.log('Found!');
+                    // console.log( 'Found!' );
                     choose.push( find );
                     this.PartNumberChoose( find, part.Part.part_id );
                 } else if ( final ) {
-                    // console.log('Not Found!');
-                    find = part.Part.PartData[ 0 ];
+                    // console.log( 'Not Found!' );
+                    // console.log('PartData: ', part.Part.PartData);
+                    // find = part.Part.PartData[ 1 ];
+                    find = part.Part.PartData.find( data =>
+                        data.status !== 'packer' &&
+                        data.status !== 'lost' &&
+                        data.LifeTime.status !== 'alert'
+                    );
+                    // console.log( 'find: ', find );
                     if ( find ) {
+                        // console.log( 'Random Found!' );
                         this.PartNumberChoose( find, part.Part.part_id );
+                        choose.push( find );
                     }
                 } else {
-                    // break;
+                    // console.log( 'Not Found!' );
+                    break;
                 }
             }
         }
@@ -277,7 +311,7 @@ export class FindComponent implements OnInit {
             const modalRef = this.modalService.open( WarningComponent );
             modalRef.componentInstance.msg = 'There is no need to take part to convert.';
         } else {
-            // console.log( 'part: ', partlist );
+            console.log( 'part: ', partlist );
             let count = 0;
             let choose;
             let final = false;
@@ -290,26 +324,35 @@ export class FindComponent implements OnInit {
                 this.btnCheckOutDisabled = true;
             } else {
                 for ( const data of partlist[ 0 ].Part.PartData ) {
+                    // console.log( 'data: ', data );
+                    // console.log( 'round: ', count + 1 );
                     this.partChoose = [];
                     this.part = [];
 
                     const location = data.location_id;
 
-                    choose = this.FindInLocation( location, partlist, final );
+                    if ( data.status !== 'packer' || data.status !== 'lost' ) {
+                        choose = this.FindInLocation( location, partlist, final );
+                        ++count;
+                        // console.log( 'choose', count, ': ', choose );
+                        if ( choose.length === partlist.length ) { // 1.เลือก part ได้ใน location เดียวกัน ทั้งหมด
+                            // console.log( 'Break1' );
+                            break;
 
-                    if ( choose.length === partlist.length ) {
-                        break;
-                    } else if ( choose.length > max.length ) {
-                        // console.log('choose: ', choose, ' > ', 'max: ', max);
-                        max = choose;
-                        maxLocation = location;
-                    } else if (!choose.length) {
-                        break;
+                        } else if ( choose.length > max.length ) { // 2.เลือกบ้าง เก็บค่าไว้ใช้อ้างอิงว่า location นี้เลือกได้เยอะ
+                            // console.log('choose: ', choose, ' > ', 'max: ', max);
+                            max = choose;
+                            maxLocation = location;
+                        } else if ( !choose.length && final ) { // 3.เลือกไม่ได้เลย
+                            // console.log( 'Break2' );
+                            break;
+                        }
+                        // console.log('max: ', max);
+                        // console.log('maxLocation: ', maxLocation);
                     }
-                    // console.log('max: ', max);
-                    // console.log('maxLocation: ', maxLocation);
-                    count++;
                 }
+                // console.log('count: ', count);
+                // console.log('partlist[ 0 ].Part.PartData.length: ', partlist[ 0 ].Part.PartData.length);
 
                 // console.log('[out loop] part: ', this.part);
                 if ( count === partlist[ 0 ].Part.PartData.length ) {
@@ -325,37 +368,7 @@ export class FindComponent implements OnInit {
                     this.btnCheckOutDisabled = true;
                 }
             }
-            // for ( const part of partlist ) {
-            //     // console.log( 'part: ', part );
-            //     // จัดตำแหน่งของ part ที่จะเลือก
-            //     // console.log( 'part: ', this.part );
-            //     this.part.push( part.Part.part_id );
-            //     // console.log( 'part: ', this.part );
-            //     let max = 0; // เก็บค่าสูงสุด
-            //     let choose: any; // เก็บ part ที่จะเลือก
-            //     for ( const partdata of part.Part.PartData ) {
-            //         // console.log('partData: ', partdata);
-            //         if ( partdata.status !== 'packer' && partdata.status !== 'lost' ) {
-            //             const diff = partdata.LifeTime.counter_base - partdata.LifeTime.counter_use;
-            //             if ( max < diff ) {
-            //                 max = diff;
-            //                 choose = partdata;
-            //             }
-            //         }
-            //     }
-            //     // console.log('chooseDefault: ', choose);
-            //     if ( choose ) {
-            //         this.PartNumberChoose( choose, part.Part.part_id );
-            //         this.btnCheckOutDisabled = false;
-            //     } else {
-            //         // console.log( 'Part Not Ready !!!' );
-            //         const modalRef = this.modalService.open( ErrorComponent );
-            //         modalRef.componentInstance.msg = 'Part is not available (No parts to use).';
-            //         this.btnCheckOutDisabled = true;
-            //         break;
-            //     }
-            // }
-            // console.log( 'partChoose: ', this.partChoose, ' | length: ', this.partChoose.length );
+            console.log( 'partChoose: ', this.partChoose, ' | length: ', this.partChoose.length );
             // console.log( 'part: ', this.part, ' | length: ', this.part.length );
             this.show = true;
         }
@@ -399,8 +412,16 @@ export class FindComponent implements OnInit {
         const part = [];
         const location = [];
         for ( const data of this.partChoose ) {
-            part.push( data.partdata_id );
-            location.push( data.location_id );
+            if ( !data.Part.part_name.toLowerCase().indexOf( 'rubbertrip' ) ) {
+                console.log( 'RubberTrip!!!' );
+                location.push( data.location_id );
+            }
+            // part.push( data.partdata_id );
+            part.push( {
+                partdata_id: data.partdata_id,
+                part_name: data.Part.part_name,
+            } );
+            // location.push( data.location_id );
         }
         const convert = {
             packer_id: this.packeridChoose,
@@ -408,6 +429,7 @@ export class FindComponent implements OnInit {
             user_id: user,
             Part: part,
         };
+        // console.log( 'part: ', part );
         this.convertService.insertConvert( convert ).subscribe();
 
         const modalRef = this.modalService.open( FindCompleteComponent, { backdrop: 'static' } );
@@ -415,8 +437,8 @@ export class FindComponent implements OnInit {
         modalRef.componentInstance.Part = this.partChoose;
         this.partdataService.updatePartdataToPacker( part ).subscribe();
 
-        // console.log('location: ', location);
-        // this.locationService.updateCell( location ).subscribe();
+        // console.log( 'location: ', location );
+        this.locationService.updateCell( location ).subscribe();
     }
 
     // จัดการเรื่อง Class scss ของปุ่มเลือก partnumber

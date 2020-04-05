@@ -3,6 +3,7 @@ import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { LocationService } from '../../services/location.service';
 import { CompleteComponent } from '../../modal/complete/complete.component';
 import { PartService } from '../../services/part.service';
+import { ErrorComponent } from '../../modal/error/error.component';
 
 @Component( {
     selector: 'app-location-modal',
@@ -18,6 +19,7 @@ export class LocationModalComponent implements OnInit {
     private listOfRack: any;
 
     private alert = false;
+    private alert2 = false;
 
     private newPart: string;
     private listOfPart: any;
@@ -62,9 +64,9 @@ export class LocationModalComponent implements OnInit {
     }
 
     createInit() {
-        this.ibLocationID = this.Location.location_id || null;
-        this.ibEmpty = this.Location.empty || null;
-        this.ibDescription = this.Location.location_description || null;
+        this.ibLocationID = this.Location.location_id;
+        this.ibEmpty = this.Location.empty;
+        this.ibDescription = this.Location.location_description;
     }
 
     sentBack( data ) {
@@ -80,7 +82,8 @@ export class LocationModalComponent implements OnInit {
             const data = {
                 rack_id: this.ibRackID,
                 row: this.ibRow,
-                column: this.ibColumn
+                column: this.ibColumn,
+                location_description: this.ibDescription,
             };
             // this.locationService.insertRack( data ).subscribe();
             this.sentBack( data );
@@ -93,12 +96,21 @@ export class LocationModalComponent implements OnInit {
             this.alert = true;
             return;
         } else {
-            const data = {
-                rack_id: this.ibRackID,
-                location_id: this.ibLocationID,
-            };
-            // this.locationService.insertLocation( data ).subscribe();
-            this.sentBack( data );
+            // console.log('listOfRack: ', this.listOfRack);
+            const rack = this.listOfRack.find( locate => locate.location_id === this.ibRackID );
+            // console.log('rack: ', rack);
+            if ( rack ) {
+                const data = {
+                    rack_id: this.ibRackID,
+                    location_id: this.ibLocationID,
+                    location_description: this.ibDescription,
+                };
+                // this.locationService.insertLocation( data ).subscribe();
+                this.sentBack( data );
+            } else {
+                this.alert2 = true;
+                return;
+            }
         }
     }
 
@@ -128,5 +140,9 @@ export class LocationModalComponent implements OnInit {
 
     closeAlert() {
         this.alert = false;
+    }
+
+    closeAlert2() {
+        this.alert2 = false;
     }
 }

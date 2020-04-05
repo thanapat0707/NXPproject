@@ -1,4 +1,4 @@
-import { NestFactory, NestApplication } from '@nestjs/core';
+import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 
 import * as bodyParser from 'body-parser'; // Add เพิ่มจากของเดิม
@@ -7,9 +7,9 @@ import * as cors from 'cors'; // Add เพิ่มจากของเดิ�
 import * as express from 'express';
 import * as path from 'path';
 import { AngularRoute } from './angular.route';
-// import { sendEmail } from './send.email';
 
 export async function bootstrap() {
+
     const app = await NestFactory.create( AppModule );
     app.use( '/upload', express.static( path.join( __dirname, '../../upload-image' ) ) );
 
@@ -19,8 +19,6 @@ export async function bootstrap() {
 
     app.use( cors() ); // Add เพิ่มจากของเดิม
     app.use( bodyParser.json() ); // Add เพิ่มจากของเดิม
-
-    // await sendEmail();
 
     return await app.listen( 3000 );
 }

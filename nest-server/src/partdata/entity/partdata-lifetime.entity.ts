@@ -14,7 +14,7 @@ export class PartdataLifetimeEntity extends Model<PartdataLifetimeEntity> {
     @BelongsTo( () => PartdataEntity )
     Partdata: PartdataEntity;
 
-    @Default( 10 )
+    @Default( 720 )
     @Column({ type: DataType.INTEGER })
         // tslint:disable-next-line:variable-name
     time_base: number;
@@ -24,7 +24,7 @@ export class PartdataLifetimeEntity extends Model<PartdataLifetimeEntity> {
         // tslint:disable-next-line:variable-name
     time_use: number;
 
-    @Default( 10 )
+    @Default( 720 )
     @Column({ type: DataType.INTEGER })
         // tslint:disable-next-line:variable-name
     counter_base: number;

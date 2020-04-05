@@ -42,10 +42,14 @@ export class ConvertEntity extends Model<ConvertEntity> {
         // tslint:disable-next-line:variable-name
     User: UserEntity;
 
-    @HasMany( () => ConvertDetailEntity )
-    ConvertDetail: ConvertDetailEntity;
-
     @Default(true)
     @Column({ type: DataType.BOOLEAN })
     working: boolean;
+
+    @Default('alright')
+    @Column({ type: DataType.STRING })
+    status: string;
+
+    @HasMany( () => ConvertDetailEntity )
+    ConvertDetail: ConvertDetailEntity[];
 }

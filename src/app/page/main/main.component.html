@@ -1,83 +1,94 @@
 <section>
-	<div class="container table-header">
-		<div class="row">
-			<div class="col-md-12">
-				<nz-table [nzShowPagination]="false" #convertTable [nzData]="listOfConvert">
-					<thead>
-					<tr>
-						<th nzShowExpand></th>
-						<th class="text-center">ConvertID</th>
-						<th class="text-center">Packer</th>
-						<th class="text-center">PackerGroup</th>
-						<th class="text-center">PackerID</th>
-						<th class="text-center">SOT</th>
-						<th class="text-center">Create User</th>
-						<th></th>
-						<!-- <th></th>-->
-						<!-- <th></th>-->
-					</tr>
-					</thead>
-<!--					 <tbody *ngFor="let data of convertTable.data">-->
-					<tbody>
-					<!-- <tr class = "text-center" [ngClass]="CheckLifeTime(data.ConvertDetail.Partdata.LifeTime.status)" >-->
-						<ng-template ngFor let-data [ngForOf]="convertTable.data">
-							<tr class="text-center">
-								<td nzShowExpand [(nzExpand)]="data.expand"></td>
-								<td>{{ data.convert_id }}</td>
-								<td>{{ data.Packer.packer_type }}</td>
-								<td>{{ data.Packer.packer_group }}</td>
-								<td>{{ data.Packer.packer_id }}</td>
-								<td><span nz-popover nzType="primary" [nzPopoverContent]="data.SOT.package_name">{{ data.sot_id }}</span></td>
-								<td>{{ data.User.user_name }}</td>
-								<td><button class="btn btn-outline-primary" (click)="convertDetail( data.convert_id )">Part</button></td>
-								<!-- <td><button class="btn btn-outline-primary" (click)="StorePart(data.convert_id)">Store</button></td>-->
-								<!-- <td><button class="btn btn-outline-primary">Convert</button></td>-->
-							</tr>
-							<!-- Expand Detail-->
-<!--							<tr [nzExpand]="data.expand">-->
-<!--								<td></td>-->
-<!--								<td colspan="7">-->
-<!--									<nz-table #innerTable [nzData]="data.ConvertDetail" [nzShowPagination]="false">-->
-<!--										<thead>-->
-<!--											<tr>-->
-<!--												<th class = "text-center">PartData Name</th>-->
-<!--												<th class = "text-center">PartName</th>-->
-<!--												<th class = "text-center">Location</th>-->
-<!--												<th class = "text-center">TimeBase</th>-->
-<!--												<th class = "text-center">Time_Use</th>-->
-<!--												<th class = "text-center">CounterBase</th>-->
-<!--												<th class = "text-center">Counter_Use</th>-->
-<!--												<th></th>-->
-<!--											</tr>-->
-<!--										</thead>-->
-<!--										<tbody>-->
-<!--										&lt;!&ndash;			<tr [ngStyle]="{'background': LifeTimeCheck(data.counter_base, data.counter_use)}">&ndash;&gt;-->
-<!--										<tr *ngFor = "let part of innerTable.data">-->
-<!--											<td class = "text-center">{{ part.Partdata.partdata_name }}</td>&ndash;&gt;-->
-<!--											<td>{{ part.Partdata.Part.part_name }}</td>-->
-<!--											<td class = "text-center"><nz-avatar nzShape="square" nzSize="large" [nzSrc]="part.Partdata.Part.part_image"></nz-avatar>{{ part.Partdata.Part.part_name }}</td>-->
-<!--											<td class = "text-center">{{ part.Partdata.location_id }}</td>-->
-<!--											<td class = "text-center">{{ part.Partdata.LifeTime.time_base }}</td>-->
-<!--											<td class = "text-center">{{ part.Partdata.LifeTime.time_use }}</td>-->
-<!--											<td class = "text-center">{{ part.Partdata.LifeTime.counter_base }}</td>-->
-<!--											<td class = "text-center">{{ part.Partdata.LifeTime.counter_use }}</td>-->
-<!--											<td>-->
-<!--												<button class="btn btn-warning">PM</button>-->
-<!--											</td>-->
-<!--											&lt;!&ndash; <td> &ndash;&gt;-->
-<!--												&lt;!&ndash; <button class="btn btn-warning" (click)="OpenSubmitModal( part.Partdata.partdata_id )">PM</button> &ndash;&gt;-->
-<!--											&lt;!&ndash; </td> &ndash;&gt;-->
-<!--										</tr>-->
-<!--										</tbody>-->
-<!--									</nz-table>-->
-<!--								</td>-->
-<!--							</tr>-->
-						</ng-template>
-					</tbody>
-				</nz-table>
+	<div class="header">
+		<div class="search row">
+			<div class="col-sm-3">
+				<button (click)="search()" class="btn btn-light btn-in">Search</button>
+			</div>
+			<div class="col-sm-8">
+				<input class="form-control" type="text" [(ngModel)]="searchValue"
+					   placeholder="YYYYMMDD or packerID or SOT">
 			</div>
 		</div>
 	</div>
-	<!--	<button (click) = "test()" class="btn btn-secondary">test</button>-->
-</section>
+	<div class="container table-header">
+		<div class="row">
+			<div class="col-md-12">
+				<nz-table [nzShowPagination]="false" nzSize="large" #convertTable [nzData]="listOfDisplayData">
+					<thead>
+					<tr>
+						<!--						<th nzShowExpand></th>-->
+						<th>ConvertID</th>
+						<th>Packer</th>
+						<th>PackerGroup</th>
+						<th>PackerID</th>
+						<th>SOT</th>
+						<th>Create User</th>
+						<!--						<th></th>-->
+					</tr>
+					</thead>
+					<tbody>
+					<ng-template ngFor let-data [ngForOf]="convertTable.data">
+						<tr (click)="data.expand = !data.expand" [ngClass]="ActivateAndStatus(data.expand, data.status )">
+							<!--							<td nzShowExpand [(nzExpand)]="data.expand"></td>-->
+							<td>{{ data.convert_id }}</td>
+							<td>{{ data.Packer.packer_type }}</td>
+							<td>{{ data.Packer.packer_group }}</td>
+							<td>{{ data.Packer.packer_id }}</td>
+							<td><span nz-popover nzType="primary"
+									  [nzPopoverContent]="data.SOT.package_name">{{ data.sot_id }}</span></td>
+							<td>{{ data.User.user_name }}</td>
+							<!--							<td><button class="btn btn-outline-primary" (click)="convertDetail( data.convert_id )">Part</button></td>-->
+						</tr>
+						<tr [nzExpand]="data.expand">
+							<!--							<td></td>-->
+							<td colspan="8">
+								<nz-table #innerTable
+										  [nzData]="data.ConvertDetail"
+										  nzSize="middle"
+										  nzBordered
+										  [nzShowPagination]="false">
+					<thead>
+					<tr>
+						<th>PartData Name</th>
+						<th>PartName</th>
+						<th>Location</th>
+						<th>TimeBase</th>
+						<th>Time_Use</th>
+						<th>CounterBase</th>
+						<th>Counter_Use</th>
+						<!--						<th>Status</th>-->
+						<th></th>
+					</tr>
+					</thead>
+					<tbody>
+					<tr *ngFor="let part of innerTable.data"
+						[ngClass]="CheckLifeTime(part.Partdata.LifeTime.status)"
+					>
+						<!--						<tr *ngFor="let data of innerTable.data">-->
+						<td><a (click)="CallPartDataModal(data.convert_id, part.Partdata)">{{ part.Partdata.partdata_name }}</a></td>
+						<td class="text-left">
+							<nz-avatar nzShape="square" nzSize="medium"
+									   [nzSrc]="part.Partdata.Part.part_image"></nz-avatar>
+							{{ part.Partdata.Part.part_name }}
+						</td>
+						<td>{{ part.Partdata.location_id }}</td>
+						<td>{{ part.Partdata.LifeTime.time_base }}</td>
+						<td>{{ part.Partdata.LifeTime.time_use }}</td>
+						<td>{{ part.Partdata.LifeTime.counter_base }}</td>
+						<td>{{ part.Partdata.LifeTime.counter_use }}</td>
+						<!--						<td class="text-center">{{ part.Partdata.LifeTime.counter_use }}</td>-->
+						<td>
+							<button class="btn btn-primary"
+									(click)="ChangePart( part.convert_id, part.Partdata )">Change
+							</button>
+						</td>
+					</tr>
+					</tbody>
+				</nz-table>
 
+				<!--	ไม่ต้องมี </> ไม่เข้าใจเหมือนกันว่าทำไม	-->
+
+				<!--			</div>-->
+				<!--		</div>-->
+				<!--	</div>-->
+				<!--</section>-->

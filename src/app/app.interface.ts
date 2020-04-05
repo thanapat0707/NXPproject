@@ -26,6 +26,7 @@ export interface IConvert {
     sot_id: string;
     user_id: string;
     part: any;
+    status: string;
 }
 
 export interface IConvertDetail {

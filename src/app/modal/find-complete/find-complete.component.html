@@ -15,7 +15,7 @@
 			<tbody *ngFor = "let data of part.data">
 				<tr>
 					<td>{{ data.partdata_name }}</td>
-					<td>{{ data.location_id }}</td>
+					<td>{{ data.Location.location_id }}    [ {{data.Location.location_description}} ]</td>
 				</tr>
 			</tbody>
 		</nz-table>

@@ -2,9 +2,10 @@
 	<span class="img-change"></span>
 	<br>
 	<h1>Change complete</h1>
-	<h4>Please put the old part in to the new part's location.</h4>
+	<h4>Please put the old part in the new part's location.</h4>
 	<div class="location">
-		<nz-table [nzShowPagination]="false" #part [nzData]="Store">
+		<nz-table [nzShowPagination]="false" #part [nzData]="[Store]">
+<!--		<nz-table [nzShowPagination]="false">-->
 			<thead>
 			<tr>
 				<th class="text-center">PartData Name</th>
@@ -12,6 +13,7 @@
 			</tr>
 			</thead>
 			<tbody *ngFor = "let data of part.data">
+<!--			<tbody>-->
 			<tr>
 				<td>{{ data.partdata_name }}</td>
 				<td>{{ data.location_id }}</td>

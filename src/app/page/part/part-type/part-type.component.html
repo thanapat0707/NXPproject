@@ -8,12 +8,28 @@
 		<nz-table nzPaginationPosition="top"
 				  nzBordered="true"
 				  [nzPageSize]="7"
-				  #partTable [nzData]="listOfPart">
+				  #partTable [nzData]="listOfDisplayData">
 			<thead (nzSortChange)="sort($event)" nzSingleSort>
 			<tr>
 				<th nzWidth="100px" class="text-center" nzShowSort nzSortKey="part_id">Part ID</th>
 				<th nzWidth="100px" class="text-center">Image</th>
-				<th class="text-center" nzShowSort nzSortKey="part_name">Part Name</th>
+				<th class="text-center" nzCustomFilter nzShowSort nzSortKey="part_name">
+					Part Name
+					<i
+						nz-th-extra
+						class="ant-table-filter-icon"
+						nz-icon
+						nz-dropdown
+						#dropdown="nzDropdown"
+						nzType="search"
+						[nzDropdownMenu]="menu"
+						[class.ant-table-filter-open]="dropdown.nzVisible"
+						nzTrigger="click"
+						nzPlacement="bottomRight"
+						[nzClickHide]="false"
+						nzTableFilter
+					></i>
+				</th>
 				<th nzWidth="30px"></th>
 				<th nzWidth="50px"></th>
 			</tr>
@@ -29,6 +45,16 @@
 			</tr>
 			</tbody>
 		</nz-table>
+
+		<nz-dropdown-menu #menu="nzDropdownMenu">
+			<div class="search-box">
+				<input type="text" nz-input placeholder="Search Partdata" [(ngModel)]="searchValue"/>
+				<button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">
+					Search
+				</button>
+				<button nz-button nzSize="small" (click)="reset()">Reset</button>
+			</div>
+		</nz-dropdown-menu>
 	</div>
 </div>
 

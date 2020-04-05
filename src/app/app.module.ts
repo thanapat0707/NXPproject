@@ -34,7 +34,6 @@ import { SERVICES } from './services/services.list';
 import { ErrorComponent } from './modal/error/error.component';
 import { PackerModalComponent } from './page/setup/packer/packer-modal.component';
 import { PartlistModalComponent } from './page/part/partlist/partlist-modal.component';
-import { ConvertModalComponent } from './page/main/convert-modal.component';
 import { PartDataModalComponent } from './page/part/part-data/part-data-modal.component';
 import { UserModalComponent } from './page/setup/user/user-modal.component';
 import { PartModalComponent } from './page/part/part-type/part-modal.component';
@@ -60,7 +59,6 @@ import { ChangePartComponent } from './page/main/change-part.component';
         FindCompleteComponent,
         UserModalComponent,
         ErrorComponent,
-        ConvertModalComponent,
         LocationModalComponent,
         PackerModalComponent,
         ConfirmComponent,
@@ -102,7 +100,6 @@ import { ChangePartComponent } from './page/main/change-part.component';
         UserModalComponent,
         ErrorComponent,
         PackerModalComponent,
-        ConvertModalComponent,
         PartDataModalComponent,
         PartModalComponent,
         SotModalComponent,

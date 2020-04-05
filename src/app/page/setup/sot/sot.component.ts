@@ -3,8 +3,6 @@ import { SotService } from '../../../services/sot.service';
 import { CompleteComponent } from '../../../modal/complete/complete.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SotModalComponent } from './sot-modal.component';
-import { ConversionService } from '../../../services/conversion.service';
-import { AppComponent } from '../../../app.component';
 import { ErrorComponent } from '../../../modal/error/error.component';
 
 @Component( {
@@ -16,6 +14,11 @@ export class SotComponent implements OnInit {
 
     private listOfSOT: any;
 
+    private searchValue = '';
+    private sortName: string | null = null;
+    private sortValue: string | null = null;
+    private listOfDisplayData: any;
+
     constructor( private sotService: SotService,
                  private modalService: NgbModal, ) {
     }
@@ -25,7 +28,10 @@ export class SotComponent implements OnInit {
     }
 
     getSOT() {
-        this.sotService.selectSOT().subscribe( data => this.listOfSOT = data );
+        this.sotService.selectSOT().subscribe( data => {
+            this.listOfSOT = data;
+            this.listOfDisplayData = data;
+        } );
     }
 
     CallModal( sql, sot = {} ) {
@@ -50,7 +56,7 @@ export class SotComponent implements OnInit {
             } else {
                 // console.log( 'ERROR!!!' );
             }
-        } );
+        }, (error) => {}  );
     }
 
     Delete( id: string ) {
@@ -61,5 +67,33 @@ export class SotComponent implements OnInit {
             const modalRef = this.modalService.open( ErrorComponent );
             modalRef.componentInstance.msg = err.error.message;
         } );
+    }
+
+    search() {
+        // console.log('search: ', this.searchValue);
+        // console.log('search: ', this.searchValue.toLowerCase());
+        const filterFunc = ( item: { sot_id: string; package_name: string; } ) => {
+            return (
+                item.sot_id.indexOf( this.searchValue ) !== -1
+                || item.package_name.toLowerCase().indexOf( this.searchValue.toLowerCase() ) !== -1
+            );
+        };
+        const data = this.listOfSOT.filter( ( item: { sot_id: string; package_name: string; } ) => filterFunc( item ) );
+        this.listOfDisplayData = data.sort( ( a, b ) =>
+            this.sortValue === 'ascend'
+                // tslint:disable-next-line:no-non-null-assertion
+                ? a[ this.sortName! ] > b[ this.sortName! ]
+                ? 1
+                : -1
+                // tslint:disable-next-line:no-non-null-assertion
+                : b[ this.sortName! ] > a[ this.sortName! ]
+                ? 1
+                : -1
+        );
+    }
+
+    reset(): void {
+        this.searchValue = '';
+        this.search();
     }
 }

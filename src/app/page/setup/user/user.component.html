@@ -20,8 +20,8 @@
 			</thead>
 			<tbody>
 			<tr *ngFor="let data of userTable.data;index as i">
-				<td>{{ data.user_id }}</td>
-				<td>{{ data.user_name }}</td>
+				<td class="text-center">{{ data.user_id }}</td>
+				<td class="text-center">{{ data.user_name }}</td>
 <!--				<td><img src="../../../../assets/upload-image" alt=""></td>-->
 				<td><nz-avatar nzShape="square" [nzSize]="100" [nzSrc]="data.user_image"></nz-avatar></td>
 				<td><button class="btn btn-info" (click)="CallModal('update', data)">Edit</button></td>

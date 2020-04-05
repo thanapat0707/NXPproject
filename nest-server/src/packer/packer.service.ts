@@ -49,13 +49,13 @@ export class PackerService {
     // }
 
     async delete( data: any ) {
-        return this.partlistService.findWithPacker( data.id ).then( inPartlist => {
+        return this.convertService.findWithPacker( data.id ).then( inPartlist => {
             if ( inPartlist ) {
-                throw new HttpException( { message: 'CANNOT delete Packer in Partlist'}, HttpStatus.BAD_REQUEST );
+                throw new HttpException( { message: 'CANNOT delete Packer in Convert'}, HttpStatus.BAD_REQUEST );
             } else {
-                return this.convertService.findWithPacker( data.id ).then( inConvert => {
+                return this.partlistService.findWithPacker( data.id ).then( inConvert => {
                     if ( inConvert ) {
-                        throw new HttpException( { message: 'CANNOT Packer SOT in Convert' }, HttpStatus.BAD_REQUEST );
+                        throw new HttpException( { message: 'CANNOT delete Packer in Partlist' }, HttpStatus.BAD_REQUEST );
                     } else {
                         this.packerRepository.destroy( {where: {packer_id: data.id}}).then();
                     }

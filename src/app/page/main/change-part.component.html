@@ -1,6 +1,6 @@
 <div class="modal-header">
 	<h4 class="modal-title">Change Part</h4>
-	<button type="button" class="close" aria-label="Close" (click)="activeModal.close()">
+	<button type="button" class="close" aria-label="Close" (click)="activeModal.close(	)">
 		<span aria-hidden="true">&times;</span>
 	</button>
 </div>
@@ -25,7 +25,7 @@
 <!--			<td class = "text-center">{{ part.Partdata.LifeTime.time_use }}</td>-->
 			<td class = "text-center">{{ part.LifeTime.counter_base }}</td>
 <!--			<td class = "text-center">{{ part.Partdata.LifeTime.counter_use }}</td>-->
-			<td><button [disabled] = "disabled(part.partdata_id, part.status)" class="btn btn-primary" (click)="Confirm( part.partdata_id )">Change</button></td>
+			<td><button [disabled] = "disabled(part.partdata_id, part.status)" class="btn btn-primary" (click)="Confirm( part )">Change</button></td>
 		</tr>
 		</tbody>
 	</nz-table>

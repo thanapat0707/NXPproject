@@ -21,6 +21,12 @@ export class PartdataLifetimeController {
     //     return res.status( HttpStatus.OK ).json( Lifetime );
     // }
 
+    @Get('/PM')
+    public async findAlertPart( @Response() res ) {
+        const partdataLifetime = await this.partdataLifetimeService.findAlertPart();
+        return res.status( HttpStatus.OK ).json( partdataLifetime );
+    }
+
     @Get('/start-counter')
     public async StartCounter( @Response() res ) {
         const Counter = await this.partdataLifetimeService.start_counter();
@@ -34,15 +40,15 @@ export class PartdataLifetimeController {
     }
 
     @Post()
-    async createPartdataLifetime( @Res() res, @Body() Partdata ) {
-        const partdata = await this.partdataLifetimeService.create( Partdata );
+    createPartdataLifetime( @Res() res, @Body() Partdata ) {
+        const partdata = this.partdataLifetimeService.create( Partdata );
         return res.status( HttpStatus.OK ).json( partdata );
     }
 
     @Put('/PM')
     public async PM( @Response() res , @Body() pm) {
         // tslint:disable-next-line:no-console
-        console.log('body: ', pm);
+        // console.log('body: ', pm);
         const partdata = await this.partdataLifetimeService.PM(pm);
         return res.status( HttpStatus.OK ).json( partdata );
     }

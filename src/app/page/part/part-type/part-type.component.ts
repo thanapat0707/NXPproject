@@ -58,7 +58,7 @@ export class PartTypeComponent implements OnInit {
             } else {
                 // console.log( 'ERROR!!!' );
             }
-        } );
+        }, (error) => {}  );
     }
 
     Delete( id: string ) {
@@ -76,43 +76,44 @@ export class PartTypeComponent implements OnInit {
     search() {
         const filterFunc = ( item: { part_id: number; part_name: string } ) => {
             return (
-                // (this.listOfSearchData.length ? this.listOfSearchData.some( address => item.part_id === Number(address) ) : true)
-                // && item.partdata_name.indexOf( this.searchValue ) !== -1
-                item.part_name.indexOf( this.searchValue ) !== -1
+                item.part_name.toLowerCase().indexOf( this.searchValue.toLowerCase() ) !== -1
             );
         };
-        // const data = this.listOfPart.filter( ( item: { part_id: number; part_name: string } ) => filterFunc( item ) );
-        // console.log('data: ', data);
-        // this.listOfDisplayData = this.listOfPart.sort( ( a, b ) =>
-        //     this.sortValue === 'ascend'
-        //         // tslint:disable-next-line:no-non-null-assertion
-        //         ? a[ this.sortName! ] > b[ this.sortName! ]
-        //         ? 1
-        //         : -1
-        //         // tslint:disable-next-line:no-non-null-assertion
-        //         : b[ this.sortName! ] > a[ this.sortName! ]
-        //         ? 1
-        //         : -1
-        // );
-        // console.log('listOfPart: ', this.listOfPart);
+        const data = this.listOfPart.filter( ( item: { part_id: number; part_name: string } ) => filterFunc( item ) );
+        this.listOfDisplayData = data.sort( ( a, b ) =>
+            this.sortValue === 'ascend'
+                // tslint:disable-next-line:no-non-null-assertion
+                ? a[ this.sortName! ] > b[ this.sortName! ]
+                ? 1
+                : -1
+                // tslint:disable-next-line:no-non-null-assertion
+                : b[ this.sortName! ] > a[ this.sortName! ]
+                ? 1
+                : -1
+        );
+    }
+
+    reset(): void {
+        this.searchValue = '';
+        this.search();
     }
 
     sort( sort: { key: string; value: string } ): void {
         // console.log('sort: ', sort);
         this.sortName = sort.key;
         this.sortValue = sort.value;
-        // this.search();
-        const data = [...this.listOfPart];
-        this.listOfPart = data.sort( ( a, b ) =>
-                this.sortValue === 'ascend'
-                    // tslint:disable-next-line:no-non-null-assertion
-                    ? a[ this.sortName! ] > b[ this.sortName! ]
-                    ? 1
-                    : -1
-                    // tslint:disable-next-line:no-non-null-assertion
-                    : b[ this.sortName! ] > a[ this.sortName! ]
-                    ? 1
-                    : -1
-            );
+        this.search();
+        // const data = [...this.listOfPart];
+        // this.listOfPart = data.sort( ( a, b ) =>
+        //         this.sortValue === 'ascend'
+        //             // tslint:disable-next-line:no-non-null-assertion
+        //             ? a[ this.sortName! ] > b[ this.sortName! ]
+        //             ? 1
+        //             : -1
+        //             // tslint:disable-next-line:no-non-null-assertion
+        //             : b[ this.sortName! ] > a[ this.sortName! ]
+        //             ? 1
+        //             : -1
+        //     );
     }
 }

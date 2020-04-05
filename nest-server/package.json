@@ -27,7 +27,7 @@
     "cors": "^2.8.5",
     "date-and-time": "^0.11.1",
     "http-status": "^1.4.2",
-    "nodemailer": "^6.4.2",
+    "nodemailer": "^6.4.5",
     "nodemailer-smtp-transport": "^2.7.4",
     "path-util": "^0.3.0",
     "pg": "^7.18.1",

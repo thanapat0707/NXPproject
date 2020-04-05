@@ -37,10 +37,35 @@ export class ConvertService {
                     model: ConvertDetailEntity,
                     include: [ {
                         model: PartdataEntity,
-                        include: [ {
-                            model: PartdataLifetimeEntity,
-                        } ],
+                        include: [
+                            {
+                                model: PartdataLifetimeEntity,
+                            },
+                            {
+                                model: PartEntity,
+                            },
+                        ],
                     } ],
+                },
+            ],
+        } );
+    }
+
+    async findOne( convertID: string ): Promise<ConvertEntity> {
+        return this.convertRepository.findOne<ConvertEntity>( {
+            where: { convert_id: convertID },
+            include: [
+                {
+                    model: ConvertDetailEntity,
+                    include: [
+                        {
+                            model: PartdataEntity,
+                            include: [
+                                {
+                                    model: PartdataLifetimeEntity,
+                                },
+                            ],
+                        } ],
                 },
             ],
         } );
@@ -99,7 +124,7 @@ export class ConvertService {
 
         const part = [];
         for ( const list of data.Part ) {
-            part.push( { convert_id: datetime, partdata_id: list } );
+            part.push( { convert_id: datetime, partdata_id: list.partdata_id } );
         }
 
         this.convertRepository.build( convert ).save().then( () => {
@@ -123,9 +148,19 @@ export class ConvertService {
             { where: { convert_id: data.id } } ).then();
     }
 
+    async updateStatus( data: any ) {
+        // tslint:disable-next-line:no-console
+        // console.log( 'update Conversion status!' );
+        await this.convertRepository.update(
+            {
+                status: data.status,
+            },
+            { where: { convert_id: data.convert_id } } ).then();
+    }
+
     async updateUserConvert( data: any ): Promise<ConvertEntity[]> {
         // tslint:disable-next-line:no-console
-        console.log( 'update Convert user: ', data );
+        // console.log( 'update Convert user: ', data );
         return this.convertRepository.update(
             {
                 user_id: data.user_id,

@@ -1,61 +1,3 @@
-<!--<section>-->
-<!--	<div class="convert-detail">-->
-<!--		<div class="row">-->
-<!--			<div class="col-md-4">-->
-<!--				&lt;!&ndash; DropDown ของ Packer &ndash;&gt;-->
-<!--				<label for="packergroup">Choose Packer ID</label>-->
-<!--				<nz-select [(ngModel)]="ConvertChoose"-->
-<!--						   nzSize="default"-->
-<!--						   nzShowSearch-->
-<!--						   nzAllowClear-->
-<!--						   (ngModelChange)="getConvertDetail(ConvertChoose)"-->
-<!--						   id="packergroup">-->
-<!--					<nz-option-->
-<!--						*ngFor="let option of listOfConvertID | orderBy: 'convert_id'"-->
-<!--						[nzLabel]="option.convert_id"-->
-<!--						[nzValue]="option.convert_id">-->
-<!--					</nz-option>-->
-<!--				</nz-select>-->
-<!--			</div>-->
-<!--		</div>-->
-<!--	</div>-->
-<!--	<div class="part-data" *ngIf="listOfConvertDetail">-->
-<!--		<nz-table-->
-<!--			[nzShowPagination]="false"-->
-<!--			nzBordered="true"-->
-<!--			#convertDetailTable [nzData]="listOfConvertDetail">-->
-<!--			<thead>-->
-<!--			<tr>-->
-<!--				<th class="text-center" nzWidth="30px">No.</th>-->
-<!--				<th class="text-center">Partdata ID</th>-->
-<!--				<th class="text-center">Part Type</th>-->
-<!--				<th class="text-center">Location</th>-->
-<!--			</tr>-->
-<!--			</thead>-->
-<!--			<tbody>-->
-<!--			<tr *ngFor="let data of convertDetailTable.data;index as i">-->
-<!--				<td class="text-center">{{i + 1}}</td>-->
-<!--				<td>{{ data.partdata_id }}</td>-->
-<!--				<td>{{ data.Partdata.Part.part_name }}</td>-->
-<!--				<td>-->
-<!--					<nz-select [(ngModel)]="Location[i]"-->
-<!--							   nzSize="default"-->
-<!--							   nzShowSearch >-->
-<!--						<nz-option-->
-<!--							*ngFor="let option of listOfLocation | orderBy: 'convert_id'"-->
-<!--							[nzLabel]="option.location_id"-->
-<!--							[nzValue]="option.location_id">-->
-<!--						</nz-option>-->
-<!--					</nz-select>-->
-<!--				</td>-->
-<!--			</tr>-->
-<!--			</tbody>-->
-<!--		</nz-table>-->
-<!--		<br>-->
-<!--		<button class="btn btn-primary" (click)="StorePart()">Store</button>-->
-<!--	</div>-->
-<!--</section>-->
-
 <section>
 	<ng-sidebar-container style="height: 78vh;">
 		<ng-sidebar [(opened)]="opened"
@@ -142,7 +84,7 @@
 						></th>
 						<th class="text-center" nzWidth="30px">No.</th>
 						<th class="text-center">Part Type</th>
-						<th class="text-center">Partdata ID</th>
+						<th class="text-center">Partdata Name</th>
 						<th class="text-center">Location</th>
 					</tr>
 					</thead>
@@ -155,15 +97,15 @@
 							<nz-avatar nzShape="square" nzSize="large"
 									   [nzSrc]="data.Partdata.Part.part_image"></nz-avatar>
 							{{ data.Partdata.Part.part_name }}</td>
-						<td>{{ data.partdata_id }}</td>
+						<td>{{ data.Partdata.partdata_name }}</td>
 						<td>
-							<nz-select [(ngModel)]="Location[i]"
+							<nz-select [(ngModel)]="Location[i].location"
 									   nzSize="default"
 									   nzShowSearch>
 								<!-- | orderBy: 'convert_id' -->
 								<nz-option
 									*ngFor="let option of listOfLocation"
-									nzLabel="{{option.location_id}}, {{option.description}}"
+									nzLabel="{{option.location_id}}, {{option.location_description}}"
 									[nzValue]="option.location_id">
 								</nz-option>
 							</nz-select>
@@ -172,7 +114,7 @@
 					</tbody>
 				</nz-table>
 				<br>
-				<button class="btn btn-primary" (click)="StorePart()">Store</button>
+				<button class="btn btn-primary" (click)="StorePart('')">Store</button>
 			</div>
 		</div>
 	</ng-sidebar-container>

@@ -52,4 +52,7 @@ export class PartdataEntity extends Model<PartdataEntity> {
     @HasOne( () => ConvertDetailEntity )
     ConvertDetail: ConvertDetailEntity;
 
+    // @HasOne( () => LocationEntity )
+    // Location: LocationEntity;
+
 }

@@ -25,7 +25,7 @@ export class AppComponent implements OnInit {
     }
 
     ngOnInit() {
-        // this.startCounter();
+        this.startCounter(); // เริ่มทำการ Counting . . .
 
         this.MenuButtonsSubscribe = this.eventManager.subscribe(
             'ChangeMenuFromPage',
@@ -40,16 +40,10 @@ export class AppComponent implements OnInit {
     }
 
     startCounter() {
-        this.partdataService.startCounter().subscribe( value => console.log( 'Start!!' ) );
+        this.partdataService.startCounter().subscribe( value => console.log( 'Start counter . . .' ) );
     }
 
     stopCounter() {
-        this.partdataService.stopCounter().subscribe( value => console.log( 'Stop!!' ) );
+        this.partdataService.stopCounter().subscribe( value => console.log( 'Stop counter!!' ) );
     }
-
-    // ไม่ทำงาน
-    // ngOnDestroy() {
-    //     console.log( 'Close Program' );
-    //     this.stopCounter();
-    // }
 }

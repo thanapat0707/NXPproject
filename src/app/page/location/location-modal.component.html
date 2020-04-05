@@ -8,13 +8,26 @@
 				<div class="form-group row">
 					<label for="rack" class="col-sm-5 col-form-label required">Rack ID :</label>
 					<div class="col-sm-6">
-						<input id="rack" name="rack" [(ngModel)]="ibRackID" type="number" class="form-control" required>
+						<input id="rack" name="rack" [(ngModel)]="ibRackID" type="text" class="form-control" (click)="closeAlert2()" required>
+						<div *ngIf="alert2" class="alert alert-danger">
+							This Rack ID doesn't exist
+						</div>
 					</div>
 				</div>
 				<div class="form-group row">
 					<label for="location" class="col-sm-5 col-form-label required">Location ID :</label>
 					<div class="col-sm-6">
-						<input id="location" name="location" [(ngModel)]="ibLocationID" type="text" class="form-control" required>
+<!--						<input nz-input placeholder="[ ] - [ ] - [ ]" pattern="[1-9]-[1-9]-[1-9]" />-->
+						<input id="location" name="location" placeholder="[ ] - [ ] - [ ]" pattern="[A-za-z0-9]{1,}-[0-9]{1,2}-[0-9]{1,2}" [(ngModel)]="ibLocationID" type="text" class="form-control" (click)="closeAlert()" required>
+						<div *ngIf="alert" class="alert alert-danger">
+							Duplicate Location ID
+						</div>
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="in-description" class="col-sm-5 col-form-label">description :</label>
+					<div class="col-sm-6">
+						<input id="in-description" name="in-description" [(ngModel)]="ibDescription" type="text" class="form-control">
 					</div>
 				</div>
 			</form>
@@ -52,6 +65,12 @@
 					<label for="col" class="col-sm-4 col-form-label required">column :</label>
 					<div class="col-sm-7">
 						<input id="col" name="col" [(ngModel)]="ibColumn" type="number" class="form-control" required>
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="rack-description" class="col-sm-4 col-form-label">description :</label>
+					<div class="col-sm-7">
+						<input id="rack-description" name="rack-description" [(ngModel)]="ibDescription" type="text" class="form-control">
 					</div>
 				</div>
 			</form>
@@ -114,9 +133,9 @@
 					</div>
 				</div>
 				<div class="form-group row">
-					<label for="description" class="col-sm-4 col-form-label required">Description</label>
+					<label for="description" class="col-sm-4 col-form-label">Description</label>
 					<div class="col-sm-7">
-						<input id="description" name="description" [(ngModel)]="ibDescription" type="text" class="form-control" required>
+						<input id="description" name="description" [(ngModel)]="ibDescription" type="text" class="form-control">
 					</div>
 				</div>
 			</form>

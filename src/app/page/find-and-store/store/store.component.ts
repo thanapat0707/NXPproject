@@ -1,18 +1,14 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { PartService } from '../../../services/part.service';
+import { Component, OnInit } from '@angular/core';
 import { LocationService } from '../../../services/location.service';
 import { PartdataService } from '../../../services/partdata.service';
 import { ConversionService } from '../../../services/conversion.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CompleteComponent } from '../../../modal/complete/complete.component';
-import { AppComponent } from '../../../app.component';
 import { AppController } from '../../../app.controller';
 import { PackerService } from '../../../services/packer.service';
-import { SotService } from '../../../services/sot.service';
-import { PartlistService } from '../../../services/partlist.service';
-import { FindAndStoreService } from '../find-and-store.service';
 import { IPartData } from '../../../app.interface';
 import { ErrorComponent } from '../../../modal/error/error.component';
+import { KitConfirmComponent } from '../../../modal/kit-confirm/kit-confirm.component';
 
 @Component( {
     selector: 'app-store',
@@ -29,11 +25,6 @@ export class StoreComponent implements OnInit {
     private packerChoose = '';
     private packergroupChoose = '';
     private packeridChoose = '';
-
-    private ConvertPart = [];
-    private part = [];
-    private ConvertData: any;
-    // public listOfPacker: any;
 
     private Location = [];
 
@@ -52,7 +43,6 @@ export class StoreComponent implements OnInit {
 
     mapOfCheckedId: { [ key: string ]: boolean } = {};
 
-    // private listOfConvertDetail: any;
 
     constructor(
         private partdataService: PartdataService,
@@ -83,7 +73,8 @@ export class StoreComponent implements OnInit {
 
     refreshStatus() {
         this.isAllDisplayDataChecked = this.listOfDisplayData.every( data => this.mapOfCheckedId[ data.partdata_id ] );
-        this.isIndeterminate = this.listOfDisplayData.some( data => this.mapOfCheckedId[ data.partdata_id ] ) && !this.isAllDisplayDataChecked;
+        this.isIndeterminate = this.listOfDisplayData.some( data => this.mapOfCheckedId[ data.partdata_id ] )
+            && !this.isAllDisplayDataChecked;
 
         // console.log( 'data: ', this.mapOfCheckedId );
     }
@@ -170,11 +161,29 @@ export class StoreComponent implements OnInit {
                 // console.log('data: ', this.ConvertChoose.ConvertDetail );
                 for ( const part of this.ConvertChoose.ConvertDetail ) {
                     // console.log( 'part location: ', part );
-                    this.Location.push( part.Partdata.location_id );
+                    if ( !part.Partdata.Part.part_name.toLowerCase().indexOf( 'rubbertrip' ) ) {
+                        console.log( 'RubberTrip!!!' );
+                        for ( const location of this.listOfLocation ) {
+                            if ( location.location_description ) {
+                                if ( !location.location_description.toLowerCase().indexOf( 'rubbertrip' ) ) {
+                                    this.Location.push( {
+                                        part_name: part.Partdata.Part.part_name,
+                                        location: location.location_id,
+                                    } );
+                                    break;
+                                }
+                            }
+                        }
+                    } else {
+                        this.Location.push( {
+                            part_name: part.Partdata.Part.part_name,
+                            location: part.Partdata.location_id
+                        } );
+                    }
 
                     this.mapOfCheckedId[ part.Partdata.partdata_id ] = true;
                 }
-                // console.log( 'location: ', this.Location );
+                // console.log( 'All location: ', this.Location );
             } );
         } else {
             const modalRef = this.modalService.open( ErrorComponent );
@@ -182,11 +191,23 @@ export class StoreComponent implements OnInit {
         }
     }
 
-    StorePart() {
+    openSubmitModal() {
+        const modalRef = this.modalService.open( KitConfirmComponent, { backdrop: 'static' } );
+        modalRef.result.then( ( result ) => {
+            if ( result ) {
+                this.StorePart( result );
+            } else {
+                // console.log( 'ERROR!!!' );
+            }
+        } );
+    }
+
+    StorePart( user ) { // เผื่อว่าจะบันทึกว่าใครเป็นคน store
         // console.log( 'location: ', this.Location );
         // console.log( 'mapOfCheckedId: ', this.mapOfCheckedId );
         const keys = Object.keys( this.mapOfCheckedId );
         const data = [];
+        const location = [];
         // for ( let index = 0; index < this.ConvertChoose.ConvertDetail.length; index++ ) {
         // for ( const part of  this.ConvertChoose.ConvertDetail) {
         for ( let index = 0; index < keys.length; index++ ) {
@@ -197,19 +218,26 @@ export class StoreComponent implements OnInit {
                 data.push( {
                     // partdata_id: this.ConvertChoose.ConvertDetail[ index ].Partdata.partdata_id,
                     partdata_id: keys[ index ],
-                    location_id: this.Location[ index ],
+                    location_id: this.Location[ index ].location,
                     status: 'store',
+                    // user_id: user,
                 } );
             } else {
                 data.push( {
                     partdata_id: keys[ index ],
-                    location_id: this.Location[ index ],
+                    location_id: this.Location[ index ].location,
                     status: 'lost',
+                    // user_id: user,
                 } );
             }
+
+            if ( !this.Location[ index ].part_name.toLowerCase().indexOf( 'rubbertrip' ) ) {
+                // console.log( 'RubberTrip!!!');
+                location.push( this.Location[ index ].location );
+            }
         }
-        // this.locationService.updateCell( this.Location ).subscribe();
-        // console.log( 'store: ', data );
+        this.locationService.updateCell( location ).subscribe();
+        // console.log( 'rubber: ', location );
         this.partdataService.updatePartdataToStore( data ).subscribe();
         this.convertService.deleteConvert( this.ConvertChoose.convert_id ).subscribe( () => {
             this.ngOnInit();

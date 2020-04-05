@@ -16,7 +16,7 @@ export class PartlistModalComponent implements OnInit {
     @Input() public SQL;
     @Input() public PartList;
 
-    private newPart: string;
+    private newPart: any;
     private listOfPart: any;
     private listOfPacker: any;
     private listOfSOT: any;
@@ -40,6 +40,7 @@ export class PartlistModalComponent implements OnInit {
     }
 
     ngOnInit() {
+        // console.log('refresh: ', this.PartList);
         if ( this.SQL === 'insert' ) {
             this.getPacker();
             // this.getPartlistSOT();
@@ -61,7 +62,11 @@ export class PartlistModalComponent implements OnInit {
     }
 
     getPacker() {
-        this.packerService.selectPacker().subscribe( data => this.listOfPacker = data );
+        this.packerService.selectPacker().subscribe( data => {
+            this.listOfPacker = data;
+            this.packerGroup = data;
+            this.packerID = data;
+        } );
     }
 
     getSOT() {
@@ -85,12 +90,22 @@ export class PartlistModalComponent implements OnInit {
     // DropDown -------------------------------------------------------------------------------
     // Get list of packer group filter with packerChoose
     getPackerGroup() {
-        this.packerGroup = this.listOfPacker.filter( article => article.packer_type === this.packerChoose );
+        if ( !this.packerChoose ) {
+            this.packerGroup = this.listOfPacker;
+            this.packerID = this.listOfPacker;
+        } else {
+            this.packerGroup = this.listOfPacker.filter( article => article.packer_type === this.packerChoose );
+            this.packerID = this.listOfPacker.filter( article => article.packer_type === this.packerChoose );
+        }
     }
 
     // Get list of packerID filter with packergroupChoose
     getPackerID() {
-        this.packerID = this.listOfPacker.filter( article => article.packer_group === this.packerGroupChoose );
+        if ( !this.packerGroupChoose ) {
+            this.packerID = this.listOfPacker;
+        } else {
+            this.packerID = this.listOfPacker.filter( article => article.packer_group === this.packerGroupChoose );
+        }
     }
 
     // ----------------------------------------------------------------------------------------
@@ -109,12 +124,22 @@ export class PartlistModalComponent implements OnInit {
     }
 
     InsertPartlistDetail() {
+        // console.log('newPart: ', this.newPart);
         const data = {
             partlist_id: this.PartList.partlist_id,
-            part_id: this.newPart,
+            part_id: this.newPart.part_id,
         };
-        // this.partlistService.insertPartlistDetail( data ).subscribe();
-        this.sentBack( data );
+        this.partlistService.insertPartlistDetail( data ).subscribe( () => {
+            this.newPart = [];
+            this.modalService.open( CompleteComponent );
+            this.ngOnInit();
+        } );
+        this.PartList.PartlistDetail.push({
+            partlist_id: this.PartList.partlist_id,
+            part_id: this.newPart.part_id,
+            Part: this.newPart,
+        });
+        // this.sentBack( data );
     }
 
     DeletePartlistDetail( partlistID, partID ) {

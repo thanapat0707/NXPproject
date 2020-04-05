@@ -12,14 +12,6 @@
 		<div class="modal-body">
 			<form #PartdataForm="ngForm">
 				<div class="form-group row">
-<!--					<label for="partnumber" class="col-sm-4 col-form-label required">Part data ID :</label>-->
-<!--					<div class="col-sm-7">-->
-<!--						<input [disabled]="SQL=='update'" [(ngModel)]="ibPartdataID" id="partnumber"-->
-<!--							   name="partnumber" type="text" class="form-control" (click)="closeAlert()" required>-->
-<!--						<div *ngIf="alert" class="alert alert-danger">-->
-<!--							Duplicate Part data ID-->
-<!--						</div>-->
-<!--					</div>-->
 					<label for="partdata" class="col-sm-4 col-form-label required">Part data Name :</label>
 					<div class="col-sm-7">
 						<input [(ngModel)]="ibPartdataName" id="partdata" name="partdata" type="text" class="form-control" (click)="closeAlert()" required>
@@ -31,17 +23,11 @@
 				<div class="form-group row">
 					<label for="partname" class="col-sm-4 col-form-label required">Part type :</label>
 					<div class="col-sm-7">
-<!--						<select-->
-<!--							[(ngModel)]="ibPartname"-->
-<!--							class="form-control" id="partname" name="partname" required>-->
-<!--							<option *ngFor="let part of listOfPart" [value]="part.part_id">-->
-<!--								{{ part.part_name }}</option>-->
-<!--						</select>-->
-
-						<nz-select [(ngModel)]="ibPartname"
+						<nz-select [(ngModel)]="ibPartID"
 								   id="partname" name="partname"
 								   nzSize="large"
-								   nzShowSearch>
+								   nzShowSearch
+								   required>
 							<nz-option
 								*ngFor="let part of listOfPart"
 								[nzLabel]="part.part_name"
@@ -88,18 +74,11 @@
 				<div class="form-group row">
 					<label for="location" class="col-sm-4 col-form-label required">Location :</label>
 					<div class="col-sm-7">
-<!--						[disabled]="ibStatus=='packer'" -->
-<!--						<select-->
-<!--							[(ngModel)]="ibLocation"-->
-<!--							class="form-control" id="location" name="location" required>-->
-<!--							<option *ngFor="let location of listOfLocation" [value]="location.location_id">-->
-<!--								{{ location.location_id }}</option>-->
-<!--						</select>-->
-
 						<nz-select [(ngModel)]="ibLocation"
 								   id="location" name="location"
 								   nzSize="large"
-								   nzShowSearch>
+								   nzShowSearch
+								   required>
 							<nz-option
 								*ngFor="let location of listOfLocation"
 								nzLabel="{{location.location_id}} [ {{location.location_description}} ]"
@@ -117,7 +96,7 @@
 			<button *ngSwitchCase="'update'" [disabled]="!PartdataForm.form.valid" (click)="update()" type="submit"
 					class="btn btn-primary w-25">Update
 			</button>
-			<button (click)="activeModal.close()" type="submit" class="btn btn-secondary w-25">Cancel</button>
+			<button (click)="activeModal.close('')" type="submit" class="btn btn-secondary w-25">Cancel</button>
 		</div>
 	</div>
 </div>

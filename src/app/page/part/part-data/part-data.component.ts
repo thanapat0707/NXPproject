@@ -7,6 +7,8 @@ import { ErrorComponent } from '../../../modal/error/error.component';
 import { LocationService } from '../../../services/location.service';
 import { ConfirmComponent } from '../../../modal/confirm/confirm.component';
 import { PartService } from '../../../services/part.service';
+import { isEmpty } from 'ng-zorro-antd';
+import { WarningComponent } from '../../../modal/warning/warning.component';
 
 @Component( {
     selector: 'app-part-data',
@@ -22,7 +24,6 @@ export class PartDataComponent implements OnInit, OnDestroy {
     private searchValue = '';
     private sortName: string | null = null;
     private sortValue: string | null = null;
-    private listOfSearchData: string[] = [];
     private listOfDisplayData: any;
 
     constructor( private partdataService: PartdataService,
@@ -34,7 +35,18 @@ export class PartDataComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.getPartdata();
         this.getPart();
-        // console.log( 'WORK');
+        this.getAlert();
+        // console.log( 'WORK' );
+    }
+
+    getAlert() {
+        this.partdataService.selectAlertPM().subscribe( data => {
+                if ( data.length ) {
+                    const modalRef = this.modalService.open( WarningComponent );
+                    modalRef.componentInstance.msg = 'There are some part that need to PM';
+                }
+            }
+        );
     }
 
     getPart() {
@@ -61,7 +73,9 @@ export class PartDataComponent implements OnInit, OnDestroy {
         modalRef.componentInstance.PartData = partdata;
 
         modalRef.result.then( ( result ) => {
+            // console.log( 'result: ', result );
             if ( result ) {
+                // console.log( 'Result!!' );
                 // const Partdata = {
                 //     partdata_id: result.partdata_id,
                 //     part_id: result.part_id,
@@ -75,6 +89,10 @@ export class PartDataComponent implements OnInit, OnDestroy {
                 // };
                 switch ( sql ) {
                     case 'insert' :
+                        if ( !result.part_name.toLowerCase().indexOf( 'rubbertrip' ) ) {
+                            console.log( 'RubberTrip!!!' );
+                            this.locationService.updateCell( [ result.location_id, ] ).subscribe();
+                        }
                         // this.partdataService.insertPartdata( Partdata ).subscribe();
                         // this.partdataService.insertPartdataLifeTime( PartdataLifeTime ).subscribe( () => {
                         //     this.ngOnInit();
@@ -85,6 +103,7 @@ export class PartDataComponent implements OnInit, OnDestroy {
                         } );
                         break;
                     case 'update' :
+                        // console.log( 'result: ', result );
                         this.partdataService.updatePartdata( result ).subscribe( () => {
                             this.ngOnInit();
                         } );
@@ -92,8 +111,10 @@ export class PartDataComponent implements OnInit, OnDestroy {
                 }
                 this.modalService.open( CompleteComponent );
             } else {
+                this.ngOnInit();
                 // console.log( 'ERROR!!!' );
             }
+        }, ( error ) => {
         } );
     }
 
@@ -106,11 +127,16 @@ export class PartDataComponent implements OnInit, OnDestroy {
             modalRef.result.then( ( result ) => {
                 if ( result ) {
                     // this.locationService.updateCell( [ partdata.location_id ] ).subscribe();
+                    if ( !partdata.Part.part_name.toLowerCase().indexOf( 'rubbertrip' ) ) {
+                        console.log( 'RubberTrip!!!' );
+                        this.locationService.updateCell( [ partdata.location_id ] ).subscribe();
+                    }
                     this.partdataService.deletePartdata( partdata.partdata_id ).subscribe( () => {
                         this.ngOnInit();
                         this.modalService.open( CompleteComponent );
                     } );
                 }
+            }, ( error ) => {
             } );
         }
     }
@@ -140,8 +166,7 @@ export class PartDataComponent implements OnInit, OnDestroy {
     search() {
         const filterFunc = ( item: { partdata_name: string; part_id: number; Part: any } ) => {
             return (
-                (this.listOfSearchData.length ? this.listOfSearchData.some( part => item.part_id === Number(part) ) : true)
-                && item.Part.part_name.toLowerCase().indexOf( this.searchValue.toLowerCase() ) !== -1
+                item.Part.part_name.toLowerCase().indexOf( this.searchValue.toLowerCase() ) !== -1
             );
         };
         const data = this.listOfPartData.filter( ( item: { partdata_name: string; part_id: number; Part: any } ) => filterFunc( item ) );

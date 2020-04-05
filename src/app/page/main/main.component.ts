@@ -1,9 +1,12 @@
 import { Component, OnInit, ViewEncapsulation, Injectable, OnDestroy } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ConversionService } from '../../services/conversion.service';
-import { ConvertModalComponent } from './convert-modal.component';
-import { AppComponent } from '../../app.component';
 import { AppController } from '../../app.controller';
+import { ChangePartComponent } from './change-part.component';
+import { ChangeCompleteComponent } from '../../modal/change-complete/change-complete.component';
+import { PartdataService } from '../../services/partdata.service';
+import { PartDataModalComponent } from '../part/part-data/part-data-modal.component';
+import { CompleteComponent } from '../../modal/complete/complete.component';
 
 @Component( {
     selector: 'app-main',
@@ -14,15 +17,23 @@ export class MainComponent implements OnInit, OnDestroy {
 
     private listOfConvert: any;
     private PartData = [];
-    private PartConvert: any;
     private check: any;
+
+    private searchValue = '';
+    private sortName: string | null = null;
+    private sortValue: string | null = null;
+    private listOfDisplayData: any;
 
     constructor(
         private modalService: NgbModal,
         private conversionService: ConversionService,
-        private appController: AppController
+        private appController: AppController,
+        private partdataService: PartdataService
     ) {
     }
+
+    listOfParentData: any[] = [];
+    listOfChildrenData: any[] = [];
 
     ngOnInit() {
         this.getConvert();
@@ -36,7 +47,8 @@ export class MainComponent implements OnInit, OnDestroy {
     getConvert() {
         this.conversionService.selectConvert( true ).subscribe( data => {
             this.listOfConvert = data;
-            // console.log( 'convert: ', data );
+            this.listOfDisplayData = data;
+            console.log( 'convert: ', data );
         } );
     }
 
@@ -46,6 +58,16 @@ export class MainComponent implements OnInit, OnDestroy {
             // this.getPartDataInPacker();
             console.log( 'check' );
         }, 10000 );
+    }
+
+    CheckLifeTime( status ) {
+        if ( status === 'alright' ) {
+            return 'status-alright';
+        } else if ( status === 'almost' ) {
+            return 'status-almost';
+        } else {
+            return 'status-alert';
+        }
     }
 
     // For Convert table
@@ -60,35 +82,135 @@ export class MainComponent implements OnInit, OnDestroy {
         return color;
     }
 
-    // Open Part Modal
-    convertDetail( id ) {
-        const modalRef = this.modalService.open( ConvertModalComponent, { size: 'lg' } );
-        modalRef.componentInstance.ConvertID = id;
-    }
-
-    StorePart( id ) {
-        console.log( 'store: ', id );
-    }
-
     ngOnDestroy() {
         clearInterval( this.check );
     }
 
-    test() {
-        const a = [ 'zero', 'one', 'two', 'three' ];
-        const sliced = a.slice( 1, 3 );
-        console.log( 'before a: ', a );
-        console.log( 'slice: ', sliced );
-        console.log( 'after a: ', a );
+    CallPartDataModal( convertID, partdata ) {
+        const modalRef = this.modalService.open( PartDataModalComponent );
+        modalRef.componentInstance.SQL = 'update';
+        modalRef.componentInstance.PartData = partdata;
+        modalRef.componentInstance.ConvertID = convertID;
+
+        modalRef.result.then( ( result ) => {
+            if ( result ) {
+                this.partdataService.updatePartdata( result ).subscribe( () => {
+                    this.ngOnInit();
+                    this.modalService.open( CompleteComponent );
+                } );
+            } else {
+                this.ngOnInit();
+            }
+        }, ( error ) => {
+        } );
+        // console.log('convert: ', convertID, ' | partdata: ', partdata);
     }
 
-    CheckLifeTime( status ) {
-        if ( status === 'alright' ) {
-            return 'status-alright';
-        } else if ( status === 'almost' ) {
-            return 'status-almost';
+    ChangePart( ConvertID, Partdata ) {
+        const modalRef = this.modalService.open( ChangePartComponent, { size: 'lg' } );
+        modalRef.componentInstance.PartID = Partdata.part_id;
+        modalRef.componentInstance.PartdataID = Partdata.partdata_id;
+        modalRef.result.then( ( data ) => {
+            // console.log('data: ', data);
+            if ( data ) {
+                const OldPart = Partdata.partdata_id;
+                const OldPartLocation = Partdata.location_id;
+                const NewPart = data.partdata_id;
+                const NewPartLocation = data.location_id;
+
+                // Change at Convert Detail
+                const changePartData = {
+                    convert_id: ConvertID,
+                    oldPart: OldPart,
+                    newPart: NewPart,
+                };
+                // Change at Conversion
+                const changeUser = {
+                    convert_id: ConvertID,
+                    user_id: data.user_id
+                };
+                let store;
+                // Update at Partdata and display in ChangeComplete
+                if ( !data.part_name.toLowerCase().indexOf( 'rubbertrip' ) ) {
+                    console.log( 'RubberTrip!!!' );
+                    store = { // Old part
+                        partdata_id: OldPart,
+                        // partdata_name: Partdata.partdata_name,
+                        location_id: NewPartLocation,
+                        status: 'store',
+                    };
+                    // this.locationService.updateCell( [ data.location_id, Partdata.location_id ] ).subscribe();
+                } else {
+                    store = { // Old part
+                        partdata_id: OldPart,
+                        // partdata_name: Partdata.partdata_name,
+                        location_id: OldPartLocation,
+                        status: 'store',
+                    };
+                }
+                const packer = { // New part
+                    partdata_id: NewPart,
+                    part_name: data.part_name,
+                    // location_id: data.location_id,
+                };
+                const switchLocation = {
+                    oldPart: OldPart,
+                    oldPartLocation: OldPartLocation,
+                    newPart: NewPart,
+                    newPartLocation: NewPartLocation,
+                };
+                // console.log( 'ChangeData: ', changePartData );
+                // console.log( 'Data: ', data );
+                this.conversionService.changePartConvert( changePartData ).subscribe(); // create & delete part in ConvertDetail
+                this.partdataService.updatePartdataToStore( [ store ] ).subscribe(); // Update part to store
+                this.partdataService.updatePartdataToPacker( [ packer ] ).subscribe(); // Update part to packer
+                this.partdataService.switchPartLocation( switchLocation ).subscribe(); // Switch location of part
+                this.conversionService.updateUserConvert( changeUser ).subscribe( () => { // Update user_id in Convert
+                    const complete = this.modalService.open( ChangeCompleteComponent );
+                    complete.componentInstance.Store = {
+                        partdata_name: Partdata.partdata_name,
+                        location_id: NewPartLocation,
+                    };
+                    this.ngOnInit();
+                } );
+            } else {
+                // console.log( 'Cancel!!!' );
+            }
+        }, ( error ) => {
+        } );
+    }
+
+    search() {
+        // console.log('search: ', this.searchValue);
+        // console.log('search: ', this.searchValue.toLowerCase());
+        const filterFunc = ( item: { packer_id: string; sot_id: string; convert_id: string; } ) => {
+            return (
+                item.packer_id.toLowerCase().indexOf( this.searchValue.toLowerCase() ) !== -1 ||
+                item.sot_id.toLowerCase().indexOf( this.searchValue.toLowerCase() ) !== -1 ||
+                item.convert_id.toLowerCase().indexOf( this.searchValue.toLowerCase() ) !== -1
+            );
+        };
+
+        const data = this.listOfConvert.filter( (
+            item: { packer_id: string; sot_id: string; convert_id: string; } ) => filterFunc( item ) );
+        this.listOfDisplayData = data.sort( ( a, b ) =>
+            this.sortValue === 'ascend'
+                // tslint:disable-next-line:no-non-null-assertion
+                ? a[ this.sortName! ] > b[ this.sortName! ]
+                ? 1
+                : -1
+                // tslint:disable-next-line:no-non-null-assertion
+                : b[ this.sortName! ] > a[ this.sortName! ]
+                ? 1
+                : -1
+        );
+    }
+
+    ActivateAndStatus( click, status ) {
+        if ( click ) {
+            return 'click';
         } else {
-            return 'status-alert';
+            return this.CheckLifeTime( status );
         }
     }
 

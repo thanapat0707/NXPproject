@@ -55,7 +55,7 @@ export class ConversionService {
     }
 
     updateUserConvert( data: any ): Observable<IConvert[]> {
-        console.log( 'userID: ', data );
+        // console.log( 'userID: ', data );
         const url = `${this.ConvertURL}/user`;
         return this.http.put<IConvert[]>( url, data );
     }

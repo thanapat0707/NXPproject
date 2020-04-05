@@ -8,6 +8,7 @@ export class AngularRoute implements ExceptionFilter {
         const ctx = host.switchToHttp();
         const response = ctx.getResponse();
         const angularPath = path.join( __dirname, '../..', `/dist/ckm/index.html`);
+        // tslint:disable-next-line:no-console
         // console.log('angular path: ', angularPath);
         response.sendFile( path.join( angularPath ));
     }
