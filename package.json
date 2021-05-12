@@ -28,7 +28,7 @@
     "@ngx-translate/core": "^11.0.1",
     "@ngx-translate/http-loader": "^4.0.0",
     "bootstrap": "^4.4.1",
-    "chart.js": "^2.9.3",
+    "chart.js": "^2.9.4",
     "concurrently": "^5.0.2",
     "esm": "^3.2.25",
     "font-awesome": "^4.7.0",
